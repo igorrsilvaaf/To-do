@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/Style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>To-Do List - Dashboard</title>
+</head>
+
+<body>
+    <!-- Painel Lateral -->
+    <div class="sidebar">
+        <div class="sidebar__header">
+            <h2>Meu Trabalho</h2>
+        </div>
+        <nav>
+            <ul>
+                <li id="menu-home">🏠 Home</li>
+                <li id="menu-projects">📁 Projetos
+                    <ul>
+                        <li id="menu-dev-site">🔧 Desenvolvimento de Site</li>
+                        <li id="menu-crm">💻 Integração CRM</li>
+                    </ul>
+                </li>
+                <li id="menu-reports">📊 Relatórios</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Seção Principal -->
+    <div class="main-content">
+        <!-- Seção Home -->
+        <section id="home-section" class="section active">
+            <header>
+                <h1 id="page-title">Bem-vindo à sua Lista de Tarefas</h1>
+            </header>
+
+            <form id="taskForm" class="task-form">
+                <input type="text" id="taskName" placeholder="Nome da Tarefa" required>
+                <input type="text" id="taskType" placeholder="Tipo de Tarefa (ex: Design, Operacional)" required>
+                <input type="date" id="taskDueDate" required>
+                <input type="text" id="taskResponsible" placeholder="Responsável" required>
+                <button type="submit">Adicionar Tarefa</button>
+            </form>
+
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Tarefa</th>
+                        <th>Status</th>
+                        <th>Tipo</th>
+                        <th>Data de Entrega</th>
+                        <th>Responsável</th>
+                        <th>Concluir</th>
+                        <th>Excluir</th>
+                    </tr>
+                </thead>
+                <tbody id="taskList">
+                    <!-- As tarefas serão exibidas aqui -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Seção Projetos -->
+        <section id="projects-section" class="section hidden">
+            <header>
+                <h1>Projetos</h1>
+            </header>
+            <p>Aqui você pode gerenciar seus projetos em andamento.</p>
+        </section>
+
+        <!-- Seção Desenvolvimento de Site -->
+        <section id="dev-site-section" class="section hidden">
+            <header>
+                <h1>Desenvolvimento de Site</h1>
+            </header>
+            <p>Acompanhe o progresso e as tarefas relacionadas ao desenvolvimento de sites.</p>
+        </section>
+
+        <!-- Seção Integração CRM -->
+        <section id="crm-section" class="section hidden">
+            <header>
+                <h1>Integração CRM</h1>
+            </header>
+            <p>Gerencie suas tarefas de integração de CRM e acompanhe o progresso.</p>
+        </section>
+
+        <!-- Seção Relatórios -->
+        <section id="reports-section" class="section hidden">
+            <header>
+                <h1>Relatórios</h1>
+            </header>
+            <p>Veja relatórios e análises detalhadas sobre o progresso dos seus projetos e tarefas.</p>
+        </section>
+
+    </div>
+
+    <script src="/js/Main.js"></script>
+</body>
+
+</html>
