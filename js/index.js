@@ -49,6 +49,9 @@ menuItems.forEach(item => {
             sidebar.classList.remove('active'); // Fecha o menu ao clicar em um item no modo mobile
             sidebar.style.display = 'none';
         }
+        if (item.id === 'menu-reports') {
+            loadReports(); // Carrega os relatórios ao clicar no menu Relatórios
+        }
     });
 });
 
@@ -75,7 +78,7 @@ function addTask(event) {
     event.preventDefault();
     const taskText = document.getElementById('taskName').value.trim();
     const taskType = document.getElementById('taskType').value.trim();
-    const taskDueDate = document.getElementById('taskDueDate').value;
+    const taskDueDate = new Date(document.getElementById('taskDueDate').value).toLocaleDateString('pt-BR');
     const taskResponsible = document.getElementById('taskResponsible').value.trim();
     const taskProject = document.getElementById('taskProject').value;
 
@@ -95,6 +98,7 @@ function addTask(event) {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         tasks.push(task);
         saveTasks(tasks);
+        saveReport('Adicionada', task);
 
         document.getElementById('taskForm').reset();
     } else {
@@ -139,14 +143,17 @@ function renderTask(task) {
     applyStatusColor(taskRow, task.status);
 
     taskRow.querySelector('.btn-complete').addEventListener('change', function () {
-        task.status = this.checked ? 'Concluída' : 'Em andamento';
+        const newStatus = this.checked ? 'Concluída' : 'Em andamento';
+        task.status = newStatus;
         taskRow.children[1].textContent = task.status;
         applyStatusColor(taskRow, task.status);
         updateTask(task.id, task);
+        saveReport('Status atualizado para ' + newStatus, task);
     });
 
     taskRow.querySelector('.btn-delete').addEventListener('click', function () {
         taskList.removeChild(taskRow);
+        saveReport('Deletada', task);
         deleteTask(task.id);
     });
 }
@@ -259,3 +266,61 @@ window.addEventListener('load', loadProjects);
 
 // Adicionar novo projeto ao enviar o formulário
 document.getElementById('projectForm').addEventListener('submit', addProject);
+
+// Função para salvar relatórios de alterações
+function saveReport(action, task) {
+    const reports = JSON.parse(localStorage.getItem('reports')) || [];
+    const report = {
+        action,
+        taskText: task.text,
+        taskResponsible: task.responsible,
+        date: new Date().toLocaleString('pt-BR'),
+        status: task.status
+    };
+    reports.push(report);
+    localStorage.setItem('reports', JSON.stringify(reports));
+}
+
+// Função para carregar relatórios
+function loadReports() {
+    const reportsSection = document.getElementById('reports-section');
+    let reportsTable = document.getElementById('reportsTable');
+
+    if (!reportsTable) {
+        reportsTable = document.createElement('table');
+        reportsTable.id = 'reportsTable';
+        reportsTable.classList.add('reports-table');
+        reportsTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Ação</th>
+                    <th>Tarefa</th>
+                    <th>Responsável</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="reportsList"></tbody>
+        `;
+        const reportsContainer = document.createElement('div');
+        reportsContainer.classList.add('reports-table-container');
+        reportsContainer.appendChild(reportsTable);
+        reportsSection.appendChild(reportsContainer);
+    }
+
+    const reportsList = document.getElementById('reportsList');
+    reportsList.innerHTML = '';
+
+    const reports = JSON.parse(localStorage.getItem('reports')) || [];
+    reports.forEach(report => {
+        const reportRow = document.createElement('tr');
+        reportRow.innerHTML = `
+            <td>${report.action}</td>
+            <td>${report.taskText}</td>
+            <td>${report.taskResponsible}</td>
+            <td>${report.date}</td>
+            <td>${report.status}</td>
+        `;
+        reportsList.appendChild(reportRow);
+    });
+}
