@@ -1,13 +1,20 @@
 // Botão da sidebar responsivo
 const menuToggle = document.getElementById('menu-toggle');
+const sidebar = document.querySelector('.sidebar');
+
 menuToggle.addEventListener('click', function () {
-    const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('active');
     if (sidebar.classList.contains('active')) {
         sidebar.style.display = 'block';
     } else {
         sidebar.style.display = 'none';
     }
+});
+
+// Fechar o menu quando o mouse sair dele
+sidebar.addEventListener('mouseleave', function () {
+    sidebar.classList.remove('active');
+    sidebar.style.display = 'none';
 });
 
 // Função para esconder todas as seções
