@@ -1,9 +1,11 @@
+/* Ajuste geral para todas as telas */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estilo para desktop e tablets */
 body {
     font-family: 'Roboto', sans-serif;
     display: flex;
@@ -17,6 +19,14 @@ body {
     width: 250px;
     height: 100vh;
     padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.sidebar.active {
+    display: block;
 }
 
 .sidebar__header {
@@ -36,22 +46,20 @@ body {
     cursor: pointer;
 }
 
+/* Conteúdo principal */
 .main-content {
     flex: 1;
-    padding: 20px;
+    padding: 40px;
     background-color: #ffffff;
     border-radius: 10px;
-    margin: 20px;
+    margin-left: 270px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 900px;
+    width: 100%;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
+/* Ajuste das seções */
 .section {
     display: none;
 }
@@ -61,12 +69,14 @@ header {
 }
 
 h1 {
+    padding: 12px;
+    margin-top: 24px;
     font-size: 2rem;
     color: #333;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 p {
@@ -74,43 +84,46 @@ p {
     color: #555;
 }
 
-/* Estilos das tabelas de tarefas */
-.task-table {
+/* Estilos da tabela */
+.task-table-container {
+    overflow-x: auto;
+    /* Permitir rolagem horizontal */
+}
+
+.task-table,
+.project-table {
     width: 100%;
+    min-width: 600px;
+    /* Define um valor mínimo para garantir que não seja comprimida demais */
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-.task-table thead {
-    background-color: #f4f5f7;
-}
-
 .task-table th,
-.task-table td {
+.task-table td,
+.project-table th,
+.project-table td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-.task-table th {
+.task-table th,
+.task-table td {
     font-size: 1rem;
     color: #555;
+    white-space: nowrap;
+    /* Impede que o conteúdo quebre em linhas e força a rolagem horizontal */
 }
 
-.task-table td {
-    font-size: 0.9rem;
-}
-
-.task-table tbody tr:hover {
+.task-table tbody tr:hover,
+.project-table tbody tr:hover {
     background-color: #f9f9f9;
 }
 
-.task-table td:nth-child(2) {
-    color: #ff9800;
-}
-
-/* Estilos do formulário de adição de tarefa */
-.task-form {
+/* Estilos do formulário */
+.task-form,
+.project-form {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -118,14 +131,18 @@ p {
 }
 
 .task-form input,
-.task-form button {
+.project-form input,
+.task-form button,
+.project-form button,
+.task-form select {
     padding: 10px;
     font-size: 1rem;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-.task-form button {
+.task-form button,
+.project-form button {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -133,22 +150,78 @@ p {
     transition: background-color 0.3s;
 }
 
-.task-form button:hover {
+.task-form button:hover,
+.project-form button:hover {
     background-color: #45a049;
 }
 
-/* Estilos dos botões */
-.btn-add-task {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
+/* Estilos de Status */
+.status-in-progress {
+    color: red;
+    font-weight: bold;
+}
+
+.status-completed {
+    color: purple;
+    font-weight: bold;
+}
+
+/* Botão de Menu (hambúrguer) */
+.menu-toggle {
+    background-color: #4caf4f00;
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    padding: 2px;
+    font-size: 1.8rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    position: fixed;
+    top: 22px;
+    left: 10px;
+    z-index: 101;
 }
 
-.btn-add-task:hover {
-    background-color: #45a049;
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* Tabelas e Formulários */
+.task-table-container,
+.project-table {
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        display: none;
+    }
+
+    .sidebar.active {
+        display: block;
+        position: fixed;
+        z-index: 100;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .sidebar__header,
+    .sidebar li {
+        font-size: 1rem;
+    }
+
+    .task-table th,
+    .task-table td,
+    .project-table th,
+    .project-table td {
+        font-size: 0.8rem;
+    }
 }
