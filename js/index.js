@@ -59,7 +59,7 @@ menuItems.forEach(item => {
 window.addEventListener('load', function () {
     showSection('home-section');
     const sidebar = document.querySelector('.sidebar');
-    sidebar.style.display = 'block';
+    sidebar.style.display = 'none';
 });
 
 // Função para carregar as tarefas do localStorage
@@ -304,6 +304,7 @@ function loadReports() {
         `;
         const reportsContainer = document.createElement('div');
         reportsContainer.classList.add('reports-table-container');
+        reportsContainer.style.overflowX = 'auto';
         reportsContainer.appendChild(reportsTable);
         reportsSection.appendChild(reportsContainer);
     }
