@@ -97,7 +97,7 @@ function addTask(event) {
             dueDate: taskDueDate,
             responsible: taskResponsible,
             project: taskProject,
-            status: 'Em andamento'
+            status: 'Pendente'
         };
 
         renderTask(task);
@@ -118,13 +118,22 @@ function applyStatusColor(taskRow, status) {
     const statusCell = taskRow.children[1]; // Coluna do status
 
     // Remove classes anteriores
-    statusCell.classList.remove('status-in-progress', 'status-completed');
+    statusCell.classList.remove('status-in-progress', 'status-completed', 'status-pending', 'status-cancelled');
 
     // Adiciona a classe correta com base no status
-    if (status === 'Em andamento') {
-        statusCell.classList.add('status-in-progress');
-    } else if (status === 'Concluída') {
-        statusCell.classList.add('status-completed');
+    switch (status) {
+        case 'Em andamento':
+            statusCell.classList.add('status-in-progress');
+            break;
+        case 'Concluída':
+            statusCell.classList.add('status-completed');
+            break;
+        case 'Pendente':
+            statusCell.classList.add('status-pending');
+            break;
+        case 'Cancelada':
+            statusCell.classList.add('status-cancelled');
+            break;
     }
 }
 
@@ -137,31 +146,79 @@ function renderTask(task) {
 
     taskRow.innerHTML = `
         <td>${task.text}</td>
-        <td>${task.status}</td>
+        <td>
+            <select class="status-select">
+                <option value="Pendente" ${task.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                <option value="Em andamento" ${task.status === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
+                <option value="Cancelada" ${task.status === 'Cancelada' ? 'selected' : ''}>Cancelada</option>
+                <option value="Concluída" ${task.status === 'Concluída' ? 'selected' : ''}>Concluída</option>
+            </select>
+        </td>
         <td>${task.type}</td>
         <td>${task.project}</td>
         <td>${task.dueDate}</td>
         <td>${task.responsible}</td>
-        <td><input type="checkbox" class="btn-complete"></td>
+        <td><input type="checkbox" class="btn-complete" ${task.status === 'Concluída' ? 'checked' : ''}></td>
         <td><button class="btn-delete">🗑️</button></td>
     `;
 
     taskList.appendChild(taskRow);
     applyStatusColor(taskRow, task.status);
 
-    taskRow.querySelector('.btn-complete').addEventListener('change', function () {
-        const newStatus = this.checked ? 'Concluída' : 'Em andamento';
+    taskRow.querySelector('.status-select').addEventListener('change', function () {
+        const newStatus = this.value;
         task.status = newStatus;
-        taskRow.children[1].textContent = task.status;
         applyStatusColor(taskRow, task.status);
         updateTask(task.id, task);
         saveReport('Status atualizado para ' + newStatus, task);
+    });
+
+    taskRow.querySelector('.btn-complete').addEventListener('change', function () {
+        if (this.checked) {
+            task.status = 'Concluída';
+            saveReport('Concluída e removida da lista', task);
+            taskList.removeChild(taskRow);
+            deleteTask(task.id);
+        }
     });
 
     taskRow.querySelector('.btn-delete').addEventListener('click', function () {
         taskList.removeChild(taskRow);
         saveReport('Deletada', task);
         deleteTask(task.id);
+    });
+}
+
+// Função para salvar relatórios de alterações
+function saveReport(action, task) {
+    const reports = JSON.parse(localStorage.getItem('reports')) || [];
+    const report = {
+        action,
+        taskText: task.text,
+        taskResponsible: task.responsible,
+        date: new Date().toLocaleString('pt-BR'),
+        status: task.status
+    };
+    reports.push(report);
+    localStorage.setItem('reports', JSON.stringify(reports));
+}
+
+// Função para carregar relatórios
+function loadReports() {
+    const reportsList = document.getElementById('reportsList');
+    reportsList.innerHTML = '';
+
+    const reports = JSON.parse(localStorage.getItem('reports')) || [];
+    reports.forEach(report => {
+        const reportRow = document.createElement('tr');
+        reportRow.innerHTML = `
+            <td>${report.action}</td>
+            <td>${report.taskText}</td>
+            <td>${report.taskResponsible}</td>
+            <td>${report.date}</td>
+            <td>${report.status}</td>
+        `;
+        reportsList.appendChild(reportRow);
     });
 }
 
@@ -273,62 +330,3 @@ window.addEventListener('load', loadProjects);
 
 // Adicionar novo projeto ao enviar o formulário
 document.getElementById('projectForm').addEventListener('submit', addProject);
-
-// Função para salvar relatórios de alterações
-function saveReport(action, task) {
-    const reports = JSON.parse(localStorage.getItem('reports')) || [];
-    const report = {
-        action,
-        taskText: task.text,
-        taskResponsible: task.responsible,
-        date: new Date().toLocaleString('pt-BR'),
-        status: task.status
-    };
-    reports.push(report);
-    localStorage.setItem('reports', JSON.stringify(reports));
-}
-
-// Função para carregar relatórios
-function loadReports() {
-    const reportsSection = document.getElementById('reports-section');
-    let reportsTable = document.getElementById('reportsTable');
-
-    if (!reportsTable) {
-        reportsTable = document.createElement('table');
-        reportsTable.id = 'reportsTable';
-        reportsTable.classList.add('reports-table');
-        reportsTable.innerHTML = `
-            <thead>
-                <tr>
-                    <th>Ação</th>
-                    <th>Tarefa</th>
-                    <th>Responsável</th>
-                    <th>Data</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="reportsList"></tbody>
-        `;
-        const reportsContainer = document.createElement('div');
-        reportsContainer.classList.add('reports-table-container');
-        reportsContainer.style.overflowX = 'auto';
-        reportsContainer.appendChild(reportsTable);
-        reportsSection.appendChild(reportsContainer);
-    }
-
-    const reportsList = document.getElementById('reportsList');
-    reportsList.innerHTML = '';
-
-    const reports = JSON.parse(localStorage.getItem('reports')) || [];
-    reports.forEach(report => {
-        const reportRow = document.createElement('tr');
-        reportRow.innerHTML = `
-            <td>${report.action}</td>
-            <td>${report.taskText}</td>
-            <td>${report.taskResponsible}</td>
-            <td>${report.date}</td>
-            <td>${report.status}</td>
-        `;
-        reportsList.appendChild(reportRow);
-    });
-}
