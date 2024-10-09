@@ -121,9 +121,23 @@
             <header>
                 <h1>Relatórios</h1>
             </header>
-            <p>Veja relatórios e análises detalhadas sobre o progresso dos seus projetos e tarefas.</p>
+            <div class="table-container">
+                <table id="reportsTable" class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Ação</th>
+                            <th>Tarefa</th>
+                            <th>Responsável</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsList">
+                        <!-- Os relatórios serão exibidos aqui -->
+                    </tbody>
+                </table>
+            </div>
         </section>
-
     </div>
 
     <script src="/js/index.js"></script>
