@@ -23,6 +23,7 @@ body {
     left: -250px;
     top: 0;
     transition: left 0.3s ease;
+    z-index: 103;
 }
 
 .sidebar.active {
@@ -57,6 +58,7 @@ body {
     margin-top: 20px;
     width: 100%;
     transition: margin-left 0.3s ease;
+    z-index: 101;
 }
 
 .main-content.sidebar-open {
@@ -98,7 +100,6 @@ p {
 .project-table {
     width: 100%;
     min-width: 600px;
-    /* Define um valor mínimo para garantir que não seja comprimida demais */
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -112,12 +113,18 @@ p {
     border-bottom: 1px solid #ddd;
 }
 
-.task-table th,
+/* Permitir quebra de linha para as tarefas */
 .task-table td {
     font-size: 1rem;
     color: #555;
-    white-space: nowrap;
-    /* Impede que o conteúdo quebre em linhas e força a rolagem horizontal */
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.task-table th {
+    font-size: 1rem;
+    color: #333;
 }
 
 .task-table tbody tr:hover,
@@ -134,6 +141,20 @@ p {
     gap: 10px;
 }
 
+/* Estilo para o campo de observação */
+.task-form textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.task-table td.observation-cell {
+    white-space: pre-wrap;
+    /* Permitir quebras de linha inseridas pelo usuário */
+}
+
 .task-form input,
 .project-form input,
 .task-form button,
@@ -145,16 +166,76 @@ p {
     border: 1px solid #ccc;
 }
 
-.task-form button,
-.project-form button {
+/* Estilo para os selects e buttons da seção notebook */
+#notebook-section select,
+#editor-toolbar button {
     background-color: #4CAF50;
     color: white;
-    border: none;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#notebook-section select option {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 
-.task-form button:hover,
+#notebook-section select:hover,
+#editor-toolbar button:hover {
+    background-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Estilo para o botão "Adicionar Tarefa" */
+.task-form button {
+    width: 150px;
+    /* Tamanho fixo para o botão */
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    /* Alinhar o texto à esquerda */
+    margin-top: 10px;
+    /* Espaçamento superior para separar do campo anterior */
+    transition: background-color 0.3s;
+}
+
+.task-form button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para o botão "Adicionar Categoria" */
+.project-form button {
+    width: 160px;
+    /* Tamanho fixo para o botão */
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    /* Alinhar o texto à esquerda */
+    margin-top: 10px;
+    /* Espaçamento superior para separar do campo anterior */
+    transition: background-color 0.3s;
+}
+
 .project-form button:hover {
     background-color: #45a049;
 }
@@ -170,6 +251,13 @@ p {
     font-weight: bold;
 }
 
+.status-select {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 0.8rem;
+    border: 1px solid #ccc;
+}
+
 /* Botão de Menu (hambúrguer) */
 .menu-toggle {
     background-color: transparent;
@@ -180,7 +268,38 @@ p {
     position: fixed;
     top: 22px;
     left: 10px;
-    z-index: 101;
+    z-index: 104;
+}
+
+/* Estilo para o Caderno */
+.editor-container {
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#editor-toolbar select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#editor-toolbar select:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#editor {
+    margin-top: 14px;
+    min-height: 800px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
 /* Responsividade para tablets */
@@ -195,6 +314,10 @@ p {
 
     .menu-toggle {
         display: block;
+    }
+
+    #editor {
+        height: calc(100vh - 250px);
     }
 }
 
@@ -225,6 +348,10 @@ p {
     .project-table th,
     .project-table td {
         font-size: 0.8rem;
+    }
+
+    #editor {
+        height: calc(100vh - 300px);
     }
 }
 
@@ -260,6 +387,25 @@ p {
     background-color: #f9f9f9;
 }
 
+/* Estilo para o botão "Limpar Relatório" */
+.clear-reports-button {
+    background-color: #f44336;
+    /* Cor de fundo vermelho */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.clear-reports-button:hover {
+    background-color: #d32f2f;
+    /* Cor de fundo ao passar o mouse */
+}
+
 /* Ajustes para dispositivos móveis pequenos */
 @media (max-width: 480px) {
 
@@ -276,5 +422,9 @@ p {
     .project-form input,
     .task-form select {
         font-size: 0.9rem;
+    }
+
+    #editor {
+        height: calc(100vh - 350px);
     }
 }

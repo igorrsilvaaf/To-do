@@ -13,8 +13,10 @@ menuToggle.addEventListener('click', function () {
 
 // Fechar o menu quando o mouse sair dele
 sidebar.addEventListener('mouseleave', function () {
-    sidebar.classList.remove('active');
-    sidebar.style.display = 'none';
+    if (window.innerWidth > 768) { // Fechar apenas em telas maiores se realmente necessário
+        sidebar.classList.remove('active');
+        sidebar.style.display = 'none';
+    }
 });
 
 // Função para esconder todas as seções
@@ -30,8 +32,13 @@ function hideAllSections() {
 function showSection(sectionId) {
     hideAllSections(); // Esconde todas as seções
     const section = document.getElementById(sectionId);
-    section.classList.remove('hidden'); // Mostra a seção desejada
-    section.classList.add('active');
+    if (section) {
+        section.classList.remove('hidden'); // Mostra a seção desejada
+        section.classList.add('active');
+    } else {
+        console.error(`Seção com ID ${sectionId} não encontrada.`);
+    }
+
 }
 
 // Função para atualizar o título da página
@@ -41,21 +48,26 @@ function setPageTitle(title) {
 
 // Vincular eventos de clique no menu lateral
 const menuItems = [
-    { id: 'menu-home', section: 'home-section', title: 'Home' },
-    { id: 'menu-projects', section: 'projects-section', title: 'Projetos' },
-    { id: 'menu-dev-site', section: 'dev-site-section', title: 'Desenvolvimento de Site' },
-    { id: 'menu-reports', section: 'reports-section', title: 'Relatórios' }
+    { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
+    { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
+    { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
+    { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' }
 ];
 
 menuItems.forEach(item => {
-    document.getElementById(item.id).addEventListener('click', function () {
+    document.getElementById(item.id).addEventListener('click', function (event) {
+        event.stopPropagation(); // Impede que o evento clique se propague para outros elementos
+        event.preventDefault(); // Evita comportamentos padrão indesejados
+
+        console.log("Clicou em: ", item.id);
         showSection(item.section);
         setPageTitle(item.title);
+
         if (window.innerWidth <= 768) {
-            const sidebar = document.querySelector('.sidebar');
             sidebar.classList.remove('active'); // Fecha o menu ao clicar em um item no modo mobile
             sidebar.style.display = 'none';
         }
+
         if (item.id === 'menu-reports') {
             loadReports(); // Carrega os relatórios ao clicar no menu Relatórios
         }
@@ -69,15 +81,79 @@ window.addEventListener('load', function () {
     sidebar.style.display = 'none';
 });
 
-// Função para carregar as tarefas do localStorage
-function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.forEach(task => renderTask(task));
+// Iniciando o IndexDB
+let db;
+const request = indexedDB.open('TaskManagerDB', 1);
+
+request.onupgradeneeded = function (event) {
+    db = event.target.result;
+
+    // Criação de stores
+    if (!db.objectStoreNames.contains('tasks')) {
+        db.createObjectStore('tasks', { keyPath: 'id' });
+    }
+    if (!db.objectStoreNames.contains('projects')) {
+        db.createObjectStore('projects', { keyPath: 'id' });
+    }
 }
 
-// Função para salvar as tarefas no localStorage
-function saveTasks(tasks) {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+request.onsuccess = function (event) {
+    db = event.target.result;
+    loadTasks();
+    loadProjects();
+};
+
+request.onerror = function (event) {
+    console.error('Erro ao abrir IndexedDB', event.target.errorCode);
+};
+
+// Variáveis de controle para carregamento de dados
+let taskLoaded = false;
+let projectsLoaded = false;
+
+// Função para carregar tarefas do IndexedDB
+function loadTasks() {
+    if (taskLoaded) return;
+    taskLoaded = true;
+
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = ''; // Limpa a lista de tarefas para evitar duplicação
+
+    const transaction = db.transaction(['tasks'], 'readonly');
+    const store = transaction.objectStore('tasks');
+    const request = store.getAll();
+
+    request.onsuccess = function () {
+        const tasks = request.result;
+        tasks.forEach(task => renderTask(task));
+    };
+}
+
+// Função para carregar projetos do IndexedDB
+function loadProjects() {
+    if (projectsLoaded) return;
+    projectsLoaded = true;
+
+    const projectList = document.getElementById('projectList');
+    projectList.innerHTML = ''; // Limpa a lista de projetos para evitar duplicação
+
+    const transaction = db.transaction(['projects'], 'readonly');
+    const store = transaction.objectStore('projects');
+    const request = store.getAll();
+
+    request.onsuccess = function () {
+        const projects = request.result;
+        projects.forEach(project => renderProject(project));
+        loadProjectsInSelect(); // Atualiza a seleção de projetos no formulário de tarefas
+    };
+}
+
+// Função para salvar as tarefas no IndexDB
+function saveTask(task) {
+    const transaction = db.transaction(['tasks'], 'readwrite');
+    const store = transaction.objectStore('tasks');
+
+    store.put(task);
 }
 
 // Função para adicionar uma nova tarefa
@@ -88,6 +164,7 @@ function addTask(event) {
     const taskDueDate = new Date(document.getElementById('taskDueDate').value).toLocaleDateString('pt-BR');
     const taskResponsible = document.getElementById('taskResponsible').value.trim();
     const taskProject = document.getElementById('taskProject').value;
+    const taskObservation = document.getElementById('taskObservation').value.trim();
 
     if (taskText && taskType && taskDueDate && taskResponsible) {
         const task = {
@@ -97,43 +174,16 @@ function addTask(event) {
             dueDate: taskDueDate,
             responsible: taskResponsible,
             project: taskProject,
+            observation: taskObservation,
             status: 'Pendente'
         };
 
         renderTask(task);
-
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        tasks.push(task);
-        saveTasks(tasks);
+        saveTask(task);
         saveReport('Adicionada', task);
-
         document.getElementById('taskForm').reset();
     } else {
         alert("Preencha todos os campos corretamente!");
-    }
-}
-
-// Função para aplicar a cor correta ao status
-function applyStatusColor(taskRow, status) {
-    const statusCell = taskRow.children[1]; // Coluna do status
-
-    // Remove classes anteriores
-    statusCell.classList.remove('status-in-progress', 'status-completed', 'status-pending', 'status-cancelled');
-
-    // Adiciona a classe correta com base no status
-    switch (status) {
-        case 'Em andamento':
-            statusCell.classList.add('status-in-progress');
-            break;
-        case 'Concluída':
-            statusCell.classList.add('status-completed');
-            break;
-        case 'Pendente':
-            statusCell.classList.add('status-pending');
-            break;
-        case 'Cancelada':
-            statusCell.classList.add('status-cancelled');
-            break;
     }
 }
 
@@ -158,17 +208,16 @@ function renderTask(task) {
         <td>${task.project}</td>
         <td>${task.dueDate}</td>
         <td>${task.responsible}</td>
+        <td class="observation-cell">${task.observation}</td>
         <td><input type="checkbox" class="btn-complete" ${task.status === 'Concluída' ? 'checked' : ''}></td>
         <td><button class="btn-delete">🗑️</button></td>
     `;
 
     taskList.appendChild(taskRow);
-    applyStatusColor(taskRow, task.status);
 
     taskRow.querySelector('.status-select').addEventListener('change', function () {
         const newStatus = this.value;
         task.status = newStatus;
-        applyStatusColor(taskRow, task.status);
         updateTask(task.id, task);
         saveReport('Status atualizado para ' + newStatus, task);
     });
@@ -222,51 +271,61 @@ function loadReports() {
     });
 }
 
-// Função para atualizar uma tarefa no localStorage
+// Função para limpar os relatórios
+function clearReports() {
+    const confirmClear = confirm("Você tem certeza que deseja limpar o relatório?");
+    if (confirmClear) {
+        localStorage.removeItem('reports');
+        loadReports();
+        alert("Relatório limpo com sucesso.");
+    }
+}
+
+document.getElementById('clearReportsButton').addEventListener('click', clearReports);
+
+// Função para atualizar uma tarefa no IndexedDB
 function updateTask(id, updatedTask) {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const taskIndex = tasks.findIndex(task => task.id === id);
-    tasks[taskIndex] = updatedTask;
-    saveTasks(tasks);
+    saveTask(updatedTask);
 }
 
-// Função para deletar uma tarefa
+// Função para deletar uma tarefa no IndexedDB
 function deleteTask(id) {
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks = tasks.filter(task => task.id !== id);
-    saveTasks(tasks);
+    const transaction = db.transaction(['tasks'], 'readwrite');
+    const store = transaction.objectStore('tasks');
+    store.delete(id);
 }
-
-// Carregar as tarefas ao iniciar a página
-window.addEventListener('load', loadTasks);
-
-// Adicionar nova tarefa ao enviar o formulário
-document.getElementById('taskForm').addEventListener('submit', addTask);
 
 // Função para carregar os projetos no campo de seleção
 function loadProjectsInSelect() {
     const projectSelect = document.getElementById('taskProject');
-    projectSelect.innerHTML = '<option value="" disabled selected>Selecione um Projeto</option>'; // Limpa o select antes de adicionar novos projetos
-    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+    projectSelect.innerHTML = '<option value="" disabled selected>Categoria</option>';
 
-    projects.forEach(project => {
-        const option = document.createElement('option');
-        option.value = project.name; // O valor será o nome do projeto
-        option.textContent = project.name; // O texto também será o nome do projeto
-        projectSelect.appendChild(option); // Adiciona o projeto no campo de seleção
-    });
+    const transaction = db.transaction(['projects'], 'readonly');
+    const store = transaction.objectStore('projects');
+    const request = store.getAll();
+
+    request.onsuccess = function () {
+        const projects = request.result;
+        projects.forEach(project => {
+            const option = document.createElement('option');
+            option.value = project.name;
+            option.textContent = project.name;
+            projectSelect.appendChild(option);
+        });
+    };
 }
 
-// Função para carregar os projetos do localStorage
-function loadProjects() {
-    const projects = JSON.parse(localStorage.getItem('projects')) || [];
-    projects.forEach(project => renderProject(project));
-    loadProjectsInSelect();
-}
+// Função para salvar projetos no IndexedDB
+function saveProject(project) {
+    const transaction = db.transaction(['projects'], 'readwrite');
+    const store = transaction.objectStore('projects');
 
-// Função para salvar os projetos no localStorage
-function saveProjects(projects) {
-    localStorage.setItem('projects', JSON.stringify(projects));
+    const request = store.get(project.id);
+    request.onsuccess = function () {
+        if (!request.result) {
+            store.put(project);
+        }
+    };
 }
 
 // Função para adicionar um novo projeto
@@ -284,13 +343,9 @@ function addProject(event) {
         };
 
         renderProject(project);
-
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        projects.push(project);
-        saveProjects(projects);
-
-        document.getElementById('projectForm').reset();
+        saveProject(project);
         loadProjectsInSelect();
+        document.getElementById('projectForm').reset();
     } else {
         alert("Preencha todos os campos do projeto corretamente!");
     }
@@ -311,22 +366,27 @@ function renderProject(project) {
 
     projectList.appendChild(projectRow);
 
-    // Evento para excluir o projeto
     projectRow.querySelector('.btn-delete-project').addEventListener('click', function () {
         projectList.removeChild(projectRow);
         deleteProject(project.id);
     });
 }
 
-// Função para deletar um projeto
+// Função para deletar um projeto no IndexedDB
 function deleteProject(id) {
-    let projects = JSON.parse(localStorage.getItem('projects')) || [];
-    projects = projects.filter(project => project.id !== id);
-    saveProjects(projects);
+    const transaction = db.transaction(['projects'], 'readwrite');
+    const store = transaction.objectStore('projects');
+    store.delete(id);
 }
 
-// Carregar os projetos ao iniciar a página
-window.addEventListener('load', loadProjects);
+// Carregar as tarefas e projetos ao iniciar a página
+window.addEventListener('load', function () {
+    loadTasks();
+    loadProjects();
+});
+
+// Adicionar nova tarefa ao enviar o formulário
+document.getElementById('taskForm').addEventListener('submit', addTask);
 
 // Adicionar novo projeto ao enviar o formulário
 document.getElementById('projectForm').addEventListener('submit', addProject);
