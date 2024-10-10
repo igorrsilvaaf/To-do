@@ -241,21 +241,37 @@ p {
 }
 
 /* Estilos de Status */
-.status-in-progress {
-    color: red;
-    font-weight: bold;
-}
 
-.status-completed {
-    color: purple;
-    font-weight: bold;
-}
 
 .status-select {
     border-radius: 5px;
     padding: 5px;
     font-size: 0.8rem;
     border: 1px solid #ccc;
+}
+
+.status-pendente {
+    background-color: rgb(224, 224, 116);
+    color: white;
+    font-weight: bold;
+}
+
+.status-em-andamento {
+    background-color: rgb(91, 91, 235);
+    color: white;
+    font-weight: bold;
+}
+
+.status-cancelada {
+    background-color: rgb(245, 105, 105);
+    color: white;
+    font-weight: bold;
+}
+
+.status-concluida {
+    background-color: rgb(10, 133, 10);
+    color: white;
+    font-weight: bold;
 }
 
 /* Botão de Menu (hambúrguer) */
@@ -319,6 +335,12 @@ p {
     #editor {
         height: calc(100vh - 250px);
     }
+
+    #notebook-section select,
+    #editor-toolbar button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
 }
 
 /* Responsividade para smartphones */
@@ -352,6 +374,12 @@ p {
 
     #editor {
         height: calc(100vh - 300px);
+    }
+
+    #notebook-section select,
+    #editor-toolbar button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
     }
 }
 
@@ -426,5 +454,11 @@ p {
 
     #editor {
         height: calc(100vh - 350px);
+    }
+
+    #notebook-section select,
+    #editor-toolbar button {
+        padding: 5px 8px;
+        font-size: 0.75rem;
     }
 }

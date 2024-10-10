@@ -33,12 +33,12 @@ function showSection(sectionId) {
     hideAllSections(); // Esconde todas as seções
     const section = document.getElementById(sectionId);
     if (section) {
-        section.classList.remove('hidden'); // Mostra a seção desejada
+        section.classList.remove('hidden');
         section.classList.add('active');
+        saveActiveSection(sectionId);
     } else {
         console.error(`Seção com ID ${sectionId} não encontrada.`);
     }
-
 }
 
 // Função para atualizar o título da página
@@ -56,20 +56,19 @@ const menuItems = [
 
 menuItems.forEach(item => {
     document.getElementById(item.id).addEventListener('click', function (event) {
-        event.stopPropagation(); // Impede que o evento clique se propague para outros elementos
-        event.preventDefault(); // Evita comportamentos padrão indesejados
+        event.stopPropagation();
+        event.preventDefault();
 
-        console.log("Clicou em: ", item.id);
         showSection(item.section);
         setPageTitle(item.title);
 
         if (window.innerWidth <= 768) {
-            sidebar.classList.remove('active'); // Fecha o menu ao clicar em um item no modo mobile
+            sidebar.classList.remove('active');
             sidebar.style.display = 'none';
         }
 
         if (item.id === 'menu-reports') {
-            loadReports(); // Carrega os relatórios ao clicar no menu Relatórios
+            loadReports();
         }
     });
 });
@@ -95,29 +94,32 @@ request.onupgradeneeded = function (event) {
     if (!db.objectStoreNames.contains('projects')) {
         db.createObjectStore('projects', { keyPath: 'id' });
     }
+    if (!db.objectStoreNames.contains('settings')) {
+        db.createObjectStore('settings', { keyPath: 'key' });
+    }
 }
 
 request.onsuccess = function (event) {
     db = event.target.result;
     loadTasks();
     loadProjects();
+    loadActiveSection();
 };
 
 request.onerror = function (event) {
     console.error('Erro ao abrir IndexedDB', event.target.errorCode);
+    showSection('home-section');
 };
 
-// Variáveis de controle para carregamento de dados
 let taskLoaded = false;
 let projectsLoaded = false;
 
-// Função para carregar tarefas do IndexedDB
 function loadTasks() {
     if (taskLoaded) return;
     taskLoaded = true;
 
     const taskList = document.getElementById('taskList');
-    taskList.innerHTML = ''; // Limpa a lista de tarefas para evitar duplicação
+    taskList.innerHTML = '';
 
     const transaction = db.transaction(['tasks'], 'readonly');
     const store = transaction.objectStore('tasks');
@@ -194,6 +196,23 @@ function renderTask(task) {
     const taskRow = document.createElement('tr');
     taskRow.setAttribute('data-id', task.id);
 
+    // Define a cor com base no status
+    let statusColorClass = '';
+    switch (task.status) {
+        case 'Pendente':
+            statusColorClass = 'status-pendente';
+            break;
+        case 'Em andamento':
+            statusColorClass = 'status-em-andamento';
+            break;
+        case 'Cancelada':
+            statusColorClass = 'status-cancelada';
+            break;
+        case 'Concluída':
+            statusColorClass = 'status-concluida';
+            break;
+    }
+
     taskRow.innerHTML = `
         <td>${task.text}</td>
         <td>
@@ -220,6 +239,7 @@ function renderTask(task) {
         task.status = newStatus;
         updateTask(task.id, task);
         saveReport('Status atualizado para ' + newStatus, task);
+        renderTaskColor(this, newStatus);
     });
 
     taskRow.querySelector('.btn-complete').addEventListener('change', function () {
@@ -236,6 +256,58 @@ function renderTask(task) {
         saveReport('Deletada', task);
         deleteTask(task.id);
     });
+
+    renderTaskColor(taskRow.querySelector('.status-select'), task.status);
+}
+
+// Função para definir a cor do status
+function renderTaskColor(element, status) {
+    element.classList.remove('status-pendente', 'status-em-andamento', 'status-cancelada', 'status-concluida');
+    switch (status) {
+        case 'Pendente':
+            element.classList.add('status-pendente');
+            break;
+        case 'Em andamento':
+            element.classList.add('status-em-andamento');
+            break;
+        case 'Cancelada':
+            element.classList.add('status-cancelada');
+            break;
+        case 'Concluída':
+            element.classList.add('status-concluida');
+            break;
+    }
+}
+
+// Função para salvar o caderno
+function saveActiveSection(sectionId) {
+    const transaction = db.transaction(['settings'], 'readwrite');
+    const store = transaction.objectStore('settings');
+    const request = store.put({ key: 'activeSection', value: sectionId });
+
+    request.onsuccess = function () {
+        console.log('Seção ativa salva com sucesso:', sectionId);
+    };
+
+    request.onerror = function () {
+        console.error('Erro ao salvar a seção ativa:', request.error);
+    };
+}
+
+function loadActiveSection() {
+    const transaction = db.transaction(['settings'], 'readonly');
+    const store = transaction.objectStore('settings');
+    const request = store.get('activeSection');
+
+    request.onsuccess = function () {
+        const sectionId = request.result ? request.result.value : 'home-section';
+        showSection(sectionId); // Mostrar a seção carregada ou a home por padrão
+    };
+
+    request.onerror = function () {
+        console.error('Erro ao carregar a seção ativa:', request.error);
+        showSection('home-section'); // Fallback para a home se ocorrer algum erro
+    };
 }
 
 // Função para salvar relatórios de alterações
