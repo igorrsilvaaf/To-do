@@ -25,7 +25,7 @@
                 <li id="menu-home">✅ Tarefas </li>
                 <li id="menu-projects">🗒️ Categorias
                     <ul>
-                        <li id="menu-dev-site">🔧 Ferramentas</li>
+                        <li id="menu-notebook">📒 Caderno</li>
                     </ul>
                 </li>
                 <li id="menu-reports">📈 Relatório </li>
@@ -38,18 +38,20 @@
         <!-- Seção Home -->
         <section id="home-section" class="section active">
             <header>
-                <h1 id="page-title">📎Lista de Tarefas📎</h1>
+                <h1 id="page-title">Lista de Tarefas ✏️</h1>
             </header>
 
             <form id="taskForm" class="task-form">
                 <input type="text" id="taskName" placeholder="Nome da Tarefa" required>
-                <input type="text" id="taskType" placeholder="Tipo de Tarefa (ex: Desenvolvimento, Qualidade)" required>
-                <input type="date" id="taskDueDate" required placeholder="dd/mm/aaaa">
-                <input type="text" id="taskResponsible" placeholder="Responsável" required>
+                <input type="text" id="taskType" placeholder="Tipo de Tarefa (ex: Desenvolvimento, Qualidade)">
+                <input type="date" id="taskDueDate" placeholder="dd/mm/aaaa">
+                <input type="text" id="taskResponsible" placeholder="Responsável">
 
-                <select id="taskProject" required>
-                    <option value="" disabled selected>Projeto</option>
+                <select id="taskProject">
+                    <option value="" disabled selected>Categoria</option>
                 </select>
+
+                <textarea id="taskObservation" placeholder="Observação" rows="10"></textarea>
 
                 <button type="submit">Adicionar Tarefa</button>
             </form>
@@ -63,6 +65,7 @@
                             <th>Categoria</th>
                             <th>Data de Entrega</th>
                             <th>Responsável</th>
+                            <th>Observação</th>
                             <th>Concluir</th>
                             <th>Excluir</th>
                         </tr>
@@ -74,10 +77,10 @@
             </div>
         </section>
 
-        <!-- Seção Projetos -->
+        <!-- Seção Categorias que antes era projetos -->
         <section id="projects-section" class="section hidden">
             <header>
-                <h1>Categorias</h1>
+                <h1>Categorias 🗄️</h1>
             </header>
 
             <form id="projectForm" class="project-form">
@@ -100,27 +103,38 @@
             </table>
         </section>
 
-        <!-- Seção Desenvolvimento de Site -->
-        <section id="dev-site-section" class="section hidden">
+        <!-- Seção Caderno -->
+        <section id="notebook-section" class="section hidden">
             <header>
-                <h1>Desenvolvimento de Site</h1>
+                <h1> Caderno 📓</h1>
             </header>
-            <p>Acompanhe o progresso e as tarefas relacionadas ao desenvolvimento de sites.</p>
-        </section>
-
-        <!-- Seção Integração CRM -->
-        <section id="crm-section" class="section hidden">
-            <header>
-                <h1>Integração CRM</h1>
-            </header>
-            <p>Gerencie suas tarefas de integração de CRM e acompanhe o progresso.</p>
+            <div class="editor-container">
+                <div id="editor-toolbar">
+                    <button onclick="document.execCommand('bold')">Negrito</button>
+                    <button onclick="document.execCommand('italic')">Itálico</button>
+                    <button onclick="document.execCommand('underline')">Sublinhado</button>
+                    <select onchange="document.execCommand('formatBlock', false, this.value)">
+                        <option value="P">Parágrafo</option>
+                        <option value="H1">Título 1</option>
+                        <option value="H2">Título 2</option>
+                        <option value="H3">Título 3</option>
+                    </select>
+                    <select onchange="document.execCommand('fontSize', false, this.value)">
+                        <option value="3">Tamanho Normal</option>
+                        <option value="4">Grande</option>
+                        <option value="5">Muito Grande</option>
+                    </select>
+                </div>
+                <div id="editor" contenteditable="true"></div>
+            </div>
         </section>
 
         <!-- Seção Relatórios -->
         <section id="reports-section" class="section hidden">
             <header>
-                <h1>Relatórios</h1>
+                <h1>Relatórios 📊</h1>
             </header>
+            <button id="clearReportsButton" class="clear-reports-button">Limpar Relatório</button> <!-- Novo botão -->
             <div class="table-container">
                 <table id="reportsTable" class="reports-table">
                     <thead>
