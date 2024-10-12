@@ -51,7 +51,8 @@ const menuItems = [
     { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
     { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
     { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
-    { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' }
+    { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' },
+    { id: 'menu-pomodoro', section: 'pomodoro-section', title: 'Pomodoro ⏳' }
 ];
 
 menuItems.forEach(item => {
@@ -462,3 +463,80 @@ document.getElementById('taskForm').addEventListener('submit', addTask);
 
 // Adicionar novo projeto ao enviar o formulário
 document.getElementById('projectForm').addEventListener('submit', addProject);
+
+// Lógica Pomodoro
+let isRunning = false;
+let isWorkTime = true;
+let workDuration = 25 * 60;
+let breakDuration = 5 * 60;
+let timer;
+let remainingTime = workDuration;
+let pomodoroHistory = [];
+
+function updateDisplay() {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+    document.getElementById('timer-display').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startPausePomodoro() {
+    if (isRunning) {
+        clearInterval(timer);
+        isRunning = false;
+        document.getElementById('start-pause-button').textContent = 'Iniciar';
+    } else {
+        timer = setInterval(function () {
+            remainingTime--;
+            updateDisplay();
+            if (remainingTime <= 0) {
+                clearInterval(timer);
+                isRunning = false;
+                document.getElementById('start-pause-button').textContent = 'Iniciar';
+                isWorkTime = !isWorkTime;
+                remainingTime = isWorkTime ? workDuration : breakDuration;
+                const status = isWorkTime ? 'Trabalho' : 'Pausa';
+                alert(`Fim do ${status}, próximo ciclo!`);
+                pomodoroHistory.push(status);
+                updateHistory();
+            }
+        }, 1000);
+        isRunning = true;
+        document.getElementById('start-pause-button').textContent = 'Pausar';
+    }
+}
+
+function resetPomodoro() {
+    clearInterval(timer);
+    isRunning = false;
+    isWorkTime = true;
+    remainingTime = workDuration;
+    updateDisplay();
+    document.getElementById('start-pause-button').textContent = 'Iniciar';
+}
+
+function saveSettings() {
+    const workInput = parseInt(document.getElementById('work-time').value);
+    const breakInput = parseInt(document.getElementById('break-time').value);
+    if (workInput > 0 && breakInput > 0) {
+        workDuration = workInput * 60;
+        breakDuration = breakInput * 60;
+        resetPomodoro();
+        alert('Configurações salvas!');
+    } else {
+        alert('Por favor, insira valores válidos.');
+    }
+}
+
+function updateHistory() {
+    const historyList = document.getElementById('pomodoro-history');
+    historyList.innerHTML = '';
+    pomodoroHistory.forEach((entry, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Ciclo ${index + 1}: ${entry}`;
+        historyList.appendChild(listItem);
+    });
+}
+
+document.getElementById('start-pause-button').addEventListener('click', startPausePomodoro);
+document.getElementById('reset-button').addEventListener('click', resetPomodoro);
+document.getElementById('save-settings-button').addEventListener('click', saveSettings);

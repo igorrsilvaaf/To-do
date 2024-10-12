@@ -462,3 +462,61 @@ p {
         font-size: 0.75rem;
     }
 }
+
+/* Estilos da Seção Pomodoro */
+.pomodoro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.timer {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: #45a049;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings input {
+    width: 50px;
+    text-align: center;
+}
+
+.history {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#pomodoro-history {
+    list-style: none;
+    padding: 0;
+}
+
+#pomodoro-history li {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
