@@ -513,7 +513,7 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
+    background-color: #c15c5c;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -521,16 +521,17 @@ p {
     width: 100%;
     max-width: 600px;
     text-align: center;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 .settings h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #333;
+    color: #f5f2f2;
 }
 
 .settings label {
+    color: #f5f2f2;
     font-size: 1.1rem;
     font-weight: bold;
     margin: 10px 0 5px;
