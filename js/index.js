@@ -30,11 +30,12 @@ function hideAllSections() {
 
 // Função para mostrar a seção selecionada
 function showSection(sectionId) {
-    hideAllSections(); // Esconde todas as seções
+    hideAllSections();
     const section = document.getElementById(sectionId);
     if (section) {
         section.classList.remove('hidden');
         section.classList.add('active');
+        console.log('Mostrando seção:', sectionId);
         saveActiveSection(sectionId);
     } else {
         console.error(`Seção com ID ${sectionId} não encontrada.`);
@@ -76,14 +77,14 @@ menuItems.forEach(item => {
 
 // Inicializar mostrando a Home
 window.addEventListener('load', function () {
-    showSection('home-section');
+    loadActiveSection();
     const sidebar = document.querySelector('.sidebar');
     sidebar.style.display = 'none';
 });
 
 // Iniciando o IndexDB
 let db;
-const request = indexedDB.open('TaskManagerDB', 1);
+const request = indexedDB.open('TaskManagerDB', 2);
 
 request.onupgradeneeded = function (event) {
     db = event.target.result;
@@ -97,14 +98,15 @@ request.onupgradeneeded = function (event) {
     }
     if (!db.objectStoreNames.contains('settings')) {
         db.createObjectStore('settings', { keyPath: 'key' });
+        console.log('Store settings criada ...')
     }
 }
 
 request.onsuccess = function (event) {
     db = event.target.result;
+    loadActiveSection();
     loadTasks();
     loadProjects();
-    loadActiveSection();
 };
 
 request.onerror = function (event) {
@@ -302,12 +304,13 @@ function loadActiveSection() {
 
     request.onsuccess = function () {
         const sectionId = request.result ? request.result.value : 'home-section';
-        showSection(sectionId); // Mostrar a seção carregada ou a home por padrão
+        console.log('Seção ativa carregada:', sectionId);  // Log para verificar a recuperação
+        showSection(sectionId);
     };
 
     request.onerror = function () {
         console.error('Erro ao carregar a seção ativa:', request.error);
-        showSection('home-section'); // Fallback para a home se ocorrer algum erro
+        showSection('home-section');
     };
 }
 
@@ -401,12 +404,12 @@ function saveProject(project) {
     };
 }
 
-// Função para adicionar um novo projeto
+// Função para adicionar uma nova categoria
 function addProject(event) {
     event.preventDefault();
 
     const projectName = document.getElementById('projectName').value.trim();
-    const projectDueDate = document.getElementById('projectDueDate').value;
+    const projectDueDate = new Date(document.getElementById('projectDueDate').value).toLocaleDateString('pt-BR');
 
     if (projectName && projectDueDate) {
         const project = {
