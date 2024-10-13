@@ -660,7 +660,17 @@ p {
     }
 
     .time-settings {
-        flex-direction: column;
+        flex-direction: row;
+    }
+
+    .time-settings #work-time {
+        margin-top: 10px;
+        width: 80px;
+    }
+
+    .time-settings #break-time {
+        margin-top: 10px;
+        width: 80px;
     }
 
     .timer {
@@ -679,14 +689,16 @@ p {
 
     .settings input {
         width: 20%;
+        padding: 8px;
+        margin: -18px;
     }
 
     .settings {
-        padding: 15px;
+        padding: 10px;
     }
 
     .history {
-        padding: 15px;
+        padding: 10px;
     }
 }
 
