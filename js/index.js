@@ -465,7 +465,7 @@ document.getElementById('taskForm').addEventListener('submit', addTask);
 document.getElementById('projectForm').addEventListener('submit', addProject);
 
 // Carrega o arquivo de som
-const endSound = new Audio('../sons/notification4.wav')
+const endSound = new Audio('../sons/notification5.mp3')
 endSound.volume = 1.0
 
 // Função para tocar o som
