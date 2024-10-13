@@ -509,11 +509,11 @@ function startPausePomodoro() {
                 playSound();
 
                 // Exibir notificação sem bloquear a execução
-                showNotification(`Fim da ${status}, próximo ciclo!`);
+                showNotification(`Fim do ${status}, próximo ciclo!`);
 
                 playSound()
                 // Adicionar o ciclo ao histórico
-                pomodoroHistory.push(`Fim da ${status} - ${new Date().toLocaleString()}`);
+                pomodoroHistory.push(`Fim do ${status} - ${new Date().toLocaleString()}`);
                 updateHistory(); // Atualiza a UI do histórico
             }
         }, 1000);

@@ -550,10 +550,11 @@ p {
 .settings button {
     margin-top: 15px;
     padding: 10px 20px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
     border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #f6f8f6;
+    color: #f44336;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
