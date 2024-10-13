@@ -496,7 +496,9 @@ function startPausePomodoro() {
         clearInterval(timer);
         isRunning = false;
         document.getElementById('start-pause-button').textContent = 'Iniciar';
+        releaseWakeLock();
     } else {
+        requestWakeLock();
         timer = setInterval(function () {
             remainingTime--;
             updateDisplay();
@@ -505,6 +507,7 @@ function startPausePomodoro() {
                 clearInterval(timer);
                 isRunning = false;
                 document.getElementById('start-pause-button').textContent = 'START';
+                releaseWakeLock();
 
                 // Registrar o ciclo ANTES de inverter isWorkTime
                 const status = isWorkTime ? 'Trabalho' : 'Pausa';
@@ -574,3 +577,28 @@ function showNotification(message) {
 document.getElementById('start-pause-button').addEventListener('click', startPausePomodoro);
 document.getElementById('reset-button').addEventListener('click', resetPomodoro);
 document.getElementById('save-settings-button').addEventListener('click', saveSettings);
+
+// Função para requisitar o Wake Lock
+let wakeLock = null
+
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake Lock ativado');
+        } else {
+            console.log('Wake Lock API não suportada neste dispositivos.')
+        }
+    } catch (err) {
+        console.log(`Falha ao ativar o Wake Lock: ${err.message}`);
+    }
+}
+
+// Função para liberar o Wake Lock quando o cronômetro parar
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Wake Lock desativado');
+    }
+}

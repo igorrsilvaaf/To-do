@@ -350,8 +350,15 @@ p {
     }
 
     .sidebar {
+        position: fixed;
+        top: -100%;
         width: 100%;
         height: auto;
+        transition: top 0.3s ease;
+    }
+
+    .sidebar.active {
+        top: 0;
     }
 
     .main-content {
