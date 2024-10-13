@@ -586,6 +586,7 @@ p {
 
 .settings button:hover {
     background-color: #45a049;
+    color: white;
 }
 
 .history {

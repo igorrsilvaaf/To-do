@@ -500,24 +500,28 @@ function startPausePomodoro() {
         timer = setInterval(function () {
             remainingTime--;
             updateDisplay();
+
             if (remainingTime <= 0) {
                 clearInterval(timer);
                 isRunning = false;
                 document.getElementById('start-pause-button').textContent = 'START';
-                isWorkTime = !isWorkTime;
-                remainingTime = isWorkTime ? workDuration : breakDuration;
+
+                // Registrar o ciclo ANTES de inverter isWorkTime
                 const status = isWorkTime ? 'Trabalho' : 'Pausa';
 
                 // Tocar som de alerta quando o ciclo terminar
                 playSound();
 
                 // Exibir notificação sem bloquear a execução
-                showNotification(`Fim do ${status}, próximo ciclo!`);
+                showNotification(`Fim da ${status}, próximo ciclo!`);
 
-                playSound()
-                // Adicionar o ciclo ao histórico
-                pomodoroHistory.push(`Fim do ${status} - ${new Date().toLocaleString()}`);
+                // Adicionar o ciclo ao histórico ANTES de inverter isWorkTime
+                pomodoroHistory.push(`Fim da ${status} - ${new Date().toLocaleString()}`);
                 updateHistory(); // Atualiza a UI do histórico
+
+                // Agora inverter isWorkTime para preparar o próximo ciclo
+                isWorkTime = !isWorkTime;
+                remainingTime = isWorkTime ? workDuration : breakDuration;
             }
         }, 1000);
         isRunning = true;
@@ -550,9 +554,10 @@ function saveSettings() {
 function updateHistory() {
     const historyList = document.getElementById('pomodoro-history');
     historyList.innerHTML = '';
+
     pomodoroHistory.forEach((entry, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Ciclo ${index + 1}: ${entry}`;
+        listItem.textContent = `Ciclo ${pomodoroHistory.length - index}: ${entry}`;
         historyList.appendChild(listItem);
     });
 }
