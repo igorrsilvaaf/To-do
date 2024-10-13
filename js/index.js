@@ -496,28 +496,35 @@ function startPausePomodoro() {
         clearInterval(timer);
         isRunning = false;
         document.getElementById('start-pause-button').textContent = 'Iniciar';
+        releaseWakeLock();
     } else {
+        requestWakeLock();
         timer = setInterval(function () {
             remainingTime--;
             updateDisplay();
+
             if (remainingTime <= 0) {
                 clearInterval(timer);
                 isRunning = false;
                 document.getElementById('start-pause-button').textContent = 'START';
-                isWorkTime = !isWorkTime;
-                remainingTime = isWorkTime ? workDuration : breakDuration;
+                releaseWakeLock();
+
+                // Registrar o ciclo ANTES de inverter isWorkTime
                 const status = isWorkTime ? 'Trabalho' : 'Pausa';
 
                 // Tocar som de alerta quando o ciclo terminar
                 playSound();
 
                 // Exibir notificação sem bloquear a execução
-                showNotification(`Fim do ${status}, próximo ciclo!`);
+                showNotification(`Fim da ${status}, próximo ciclo!`);
 
-                playSound()
-                // Adicionar o ciclo ao histórico
-                pomodoroHistory.push(`Fim do ${status} - ${new Date().toLocaleString()}`);
+                // Adicionar o ciclo ao histórico ANTES de inverter isWorkTime
+                pomodoroHistory.push(`Fim da ${status} - ${new Date().toLocaleString()}`);
                 updateHistory(); // Atualiza a UI do histórico
+
+                // Agora inverter isWorkTime para preparar o próximo ciclo
+                isWorkTime = !isWorkTime;
+                remainingTime = isWorkTime ? workDuration : breakDuration;
             }
         }, 1000);
         isRunning = true;
@@ -550,9 +557,10 @@ function saveSettings() {
 function updateHistory() {
     const historyList = document.getElementById('pomodoro-history');
     historyList.innerHTML = '';
+
     pomodoroHistory.forEach((entry, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Ciclo ${index + 1}: ${entry}`;
+        listItem.textContent = `Ciclo ${pomodoroHistory.length - index}: ${entry}`;
         historyList.appendChild(listItem);
     });
 }
@@ -569,3 +577,28 @@ function showNotification(message) {
 document.getElementById('start-pause-button').addEventListener('click', startPausePomodoro);
 document.getElementById('reset-button').addEventListener('click', resetPomodoro);
 document.getElementById('save-settings-button').addEventListener('click', saveSettings);
+
+// Função para requisitar o Wake Lock
+let wakeLock = null
+
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake Lock ativado');
+        } else {
+            console.log('Wake Lock API não suportada neste dispositivos.')
+        }
+    } catch (err) {
+        console.log(`Falha ao ativar o Wake Lock: ${err.message}`);
+    }
+}
+
+// Função para liberar o Wake Lock quando o cronômetro parar
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Wake Lock desativado');
+    }
+}
