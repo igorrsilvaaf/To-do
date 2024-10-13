@@ -464,6 +464,15 @@ document.getElementById('taskForm').addEventListener('submit', addTask);
 // Adicionar novo projeto ao enviar o formulário
 document.getElementById('projectForm').addEventListener('submit', addProject);
 
+// Carrega o arquivo de som
+const endSound = new Audio('../sons/notification4.wav')
+endSound.volume = 1.0
+
+// Função para tocar o som
+function playSound() {
+    endSound.play()
+}
+
 // Lógica Pomodoro
 let isRunning = false;
 let isWorkTime = true;
@@ -491,13 +500,21 @@ function startPausePomodoro() {
             if (remainingTime <= 0) {
                 clearInterval(timer);
                 isRunning = false;
-                document.getElementById('start-pause-button').textContent = 'Iniciar';
+                document.getElementById('start-pause-button').textContent = 'START';
                 isWorkTime = !isWorkTime;
                 remainingTime = isWorkTime ? workDuration : breakDuration;
                 const status = isWorkTime ? 'Trabalho' : 'Pausa';
-                alert(`Fim do ${status}, próximo ciclo!`);
-                pomodoroHistory.push(status);
-                updateHistory();
+
+                // Tocar som de alerta quando o ciclo terminar
+                playSound();
+
+                // Exibir notificação sem bloquear a execução
+                showNotification(`Fim da ${status}, próximo ciclo!`);
+
+                playSound()
+                // Adicionar o ciclo ao histórico
+                pomodoroHistory.push(`Fim da ${status} - ${new Date().toLocaleString()}`);
+                updateHistory(); // Atualiza a UI do histórico
             }
         }, 1000);
         isRunning = true;
@@ -535,6 +552,15 @@ function updateHistory() {
         listItem.textContent = `Ciclo ${index + 1}: ${entry}`;
         historyList.appendChild(listItem);
     });
+}
+
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 4000);  // Notificação dura 4 segundos
 }
 
 document.getElementById('start-pause-button').addEventListener('click', startPausePomodoro);
