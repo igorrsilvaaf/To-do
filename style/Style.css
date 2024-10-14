@@ -16,7 +16,7 @@ body {
 .sidebar {
     background-color: #2d3a47;
     color: white;
-    width: 250px;
+    width: 300px;
     height: 100vh;
     padding: 20px;
     position: fixed;
@@ -31,9 +31,18 @@ body {
 }
 
 .sidebar__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
     font-size: 1.5rem;
-    margin-bottom: 30px;
-    text-align: center;
+    margin-left: 30px;
+}
+
+.sidebar-logo {
+    width: 20px;
+    height: auto;
+    border-radius: 50%;
 }
 
 .sidebar ul {
@@ -113,7 +122,6 @@ p {
     border-bottom: 1px solid #ddd;
 }
 
-/* Permitir quebra de linha para as tarefas */
 .task-table td {
     font-size: 1rem;
     color: #555;
@@ -152,7 +160,6 @@ p {
 
 .task-table td.observation-cell {
     white-space: pre-wrap;
-    /* Permitir quebras de linha inseridas pelo usuário */
 }
 
 .task-form input,
@@ -166,7 +173,6 @@ p {
     border: 1px solid #ccc;
 }
 
-/* Estilo para os selects e buttons da seção notebook */
 #notebook-section select,
 #editor-toolbar button {
     background-color: #4CAF50;
@@ -196,7 +202,6 @@ p {
     transform: translateY(-2px);
 }
 
-/* Estilo para o botão "Adicionar Tarefa" */
 .task-form button {
     width: 150px;
     /* Tamanho fixo para o botão */
@@ -218,7 +223,6 @@ p {
     background-color: #45a049;
 }
 
-/* Estilo para o botão "Adicionar Categoria" */
 .project-form button {
     width: 160px;
     /* Tamanho fixo para o botão */
@@ -239,9 +243,6 @@ p {
 .project-form button:hover {
     background-color: #45a049;
 }
-
-/* Estilos de Status */
-
 
 .status-select {
     border-radius: 5px;
@@ -472,6 +473,7 @@ p {
 
 /* Pomodoro */
 .pomodoro-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -480,7 +482,7 @@ p {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 100%;
+    width: 100vw;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -513,6 +515,68 @@ p {
     background-color: #e57373;
     color: white;
     transform: translateY(-2px);
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: #c15c5c;
+    border-radius: 1px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen .timer {
+    font-size: 8rem;
+}
+
+.fullscreen .controls {
+    margin-top: 14px;
+}
+
+.fullscreen #start-pause-button {
+    font-size: 30px;
+}
+
+.fullscreen #reset-button {
+    font-size: 30px;
+}
+
+.fullscreen-button {
+    position: absolute;
+    bottom: -4px;
+    right: 1px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 10%;
+    padding: 15px;
+    font-size: 1.9rem;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.fullscreen-button:hover {
+    background-color: transparent;
+    transform: translateY(-4px);
+}
+
+.fullscreen-button:focus {
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .fullscreen-button {
+        bottom: -10px;
+        right: -5px;
+        font-size: 1.4rem;
+    }
 }
 
 .settings {

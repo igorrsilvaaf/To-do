@@ -602,3 +602,11 @@ function releaseWakeLock() {
         console.log('Wake Lock desativado');
     }
 }
+
+// Função para o FullScreen
+const fullscreenButton = document.getElementById('fullscreen-button');
+const pomodoroContainer = document.querySelector('.pomodoro-container');
+
+fullscreenButton.addEventListener('click', () => {
+    pomodoroContainer.classList.toggle('fullscreen');
+});
