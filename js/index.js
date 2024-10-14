@@ -610,3 +610,43 @@ const pomodoroContainer = document.querySelector('.pomodoro-container');
 fullscreenButton.addEventListener('click', () => {
     pomodoroContainer.classList.toggle('fullscreen');
 });
+
+// Theme dark
+// Botão de alternância de tema
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+
+// Função para alternar tema
+function toggleTheme() {
+    if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('light-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun'); // Ícone de sol para Light Mode
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon'); // Ícone de lua para Dark Mode
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Verifica o tema salvo no localStorage
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeIcon.classList.add('fa-moon');
+    } else {
+        document.body.classList.add('light-mode');
+        themeIcon.classList.add('fa-sun');
+    }
+}
+
+// Evento de clique para alternar o tema
+themeToggle.addEventListener('click', toggleTheme);
+
+// Carrega o tema ao iniciar a página
+window.addEventListener('load', loadTheme);
