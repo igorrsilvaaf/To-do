@@ -99,7 +99,6 @@ p {
     color: #555;
 }
 
-/* Estilos da tabela */
 .task-table-container {
     overflow-x: auto;
     /* Permitir rolagem horizontal */
@@ -852,11 +851,21 @@ body.dark-mode .task-table th {
     color: white;
 }
 
+body.dark-mode .task-table tbody tr:hover,
+body.dark-mode .project-table tbody tr:hover {
+    background-color: #44475a;
+    color: #f8f8f2;
+}
+
+body.dark-mode #taskList td {
+    color: white;
+}
+
 body.dark-mode .task-form input,
 body.dark-mode .task-form select,
 body.dark-mode .task-form textarea {
     background-color: #44475a;
-    color: white;
+    color: #f8f8f2;
     border-color: #6272a4;
 }
 
