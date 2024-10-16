@@ -49,26 +49,26 @@ function setPageTitle(title) {
 
 // Vincular eventos de clique no menu lateral
 const menuItems = [
-    { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
-    { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
-    { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
-    { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' },
-    { id: 'menu-pomodoro', section: 'pomodoro-section', title: 'Pomodoro ⏳' }
+    {id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️'},
+    {id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️'},
+    {id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓'},
+    {id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊'},
+    {id: 'menu-pomodoro', section: 'pomodoro-section', title: 'Pomodoro ⏳'}
 ];
 
 menuItems.forEach(item => {
     document.getElementById(item.id).addEventListener('click', function (event) {
         event.stopPropagation();
         event.preventDefault();
-
+        
         showSection(item.section);
         setPageTitle(item.title);
-
+        
         if (window.innerWidth <= 768) {
             sidebar.classList.remove('active');
             sidebar.style.display = 'none';
         }
-
+        
         if (item.id === 'menu-reports') {
             loadReports();
         }
@@ -88,16 +88,16 @@ const request = indexedDB.open('TaskManagerDB', 2);
 
 request.onupgradeneeded = function (event) {
     db = event.target.result;
-
+    
     // Criação de stores
     if (!db.objectStoreNames.contains('tasks')) {
-        db.createObjectStore('tasks', { keyPath: 'id' });
+        db.createObjectStore('tasks', {keyPath: 'id'});
     }
     if (!db.objectStoreNames.contains('projects')) {
-        db.createObjectStore('projects', { keyPath: 'id' });
+        db.createObjectStore('projects', {keyPath: 'id'});
     }
     if (!db.objectStoreNames.contains('settings')) {
-        db.createObjectStore('settings', { keyPath: 'key' });
+        db.createObjectStore('settings', {keyPath: 'key'});
         console.log('Store settings criada ...')
     }
 }
@@ -120,14 +120,14 @@ let projectsLoaded = false;
 function loadTasks() {
     if (taskLoaded) return;
     taskLoaded = true;
-
+    
     const taskList = document.getElementById('taskList');
     taskList.innerHTML = '';
-
+    
     const transaction = db.transaction(['tasks'], 'readonly');
     const store = transaction.objectStore('tasks');
     const request = store.getAll();
-
+    
     request.onsuccess = function () {
         const tasks = request.result;
         tasks.forEach(task => renderTask(task));
@@ -138,14 +138,14 @@ function loadTasks() {
 function loadProjects() {
     if (projectsLoaded) return;
     projectsLoaded = true;
-
+    
     const projectList = document.getElementById('projectList');
     projectList.innerHTML = ''; // Limpa a lista de projetos para evitar duplicação
-
+    
     const transaction = db.transaction(['projects'], 'readonly');
     const store = transaction.objectStore('projects');
     const request = store.getAll();
-
+    
     request.onsuccess = function () {
         const projects = request.result;
         projects.forEach(project => renderProject(project));
@@ -157,7 +157,7 @@ function loadProjects() {
 function saveTask(task) {
     const transaction = db.transaction(['tasks'], 'readwrite');
     const store = transaction.objectStore('tasks');
-
+    
     store.put(task);
 }
 
@@ -170,7 +170,7 @@ function addTask(event) {
     const taskResponsible = document.getElementById('taskResponsible').value.trim();
     const taskProject = document.getElementById('taskProject').value;
     const taskObservation = document.getElementById('taskObservation').value.trim();
-
+    
     if (taskText && taskType && taskDueDate && taskResponsible) {
         const task = {
             id: Date.now(),
@@ -182,7 +182,7 @@ function addTask(event) {
             observation: taskObservation,
             status: 'Pendente'
         };
-
+        
         renderTask(task);
         saveTask(task);
         saveReport('Adicionada', task);
@@ -195,10 +195,10 @@ function addTask(event) {
 // Função para renderizar a tarefa na tabela
 function renderTask(task) {
     const taskList = document.getElementById('taskList');
-
+    
     const taskRow = document.createElement('tr');
     taskRow.setAttribute('data-id', task.id);
-
+    
     taskRow.innerHTML = `
         <td>${task.text}</td>
         <td>
@@ -217,9 +217,9 @@ function renderTask(task) {
         <td><input type="checkbox" class="btn-complete" ${task.status === 'Concluída' ? 'checked' : ''}></td>
         <td><button class="btn-delete">🗑️</button></td>
     `;
-
+    
     taskList.appendChild(taskRow);
-
+    
     taskRow.querySelector('.status-select').addEventListener('change', function () {
         const newStatus = this.value;
         task.status = newStatus;
@@ -227,7 +227,7 @@ function renderTask(task) {
         saveReport('Status atualizado para ' + newStatus, task);
         renderTaskColor(this, newStatus);
     });
-
+    
     taskRow.querySelector('.btn-complete').addEventListener('change', function () {
         if (this.checked) {
             task.status = 'Concluída';
@@ -236,13 +236,13 @@ function renderTask(task) {
             deleteTask(task.id);
         }
     });
-
+    
     taskRow.querySelector('.btn-delete').addEventListener('click', function () {
         taskList.removeChild(taskRow);
         saveReport('Deletada', task);
         deleteTask(task.id);
     });
-
+    
     renderTaskColor(taskRow.querySelector('.status-select'), task.status);
 }
 
@@ -269,12 +269,12 @@ function renderTaskColor(element, status) {
 function saveActiveSection(sectionId) {
     const transaction = db.transaction(['settings'], 'readwrite');
     const store = transaction.objectStore('settings');
-    const request = store.put({ key: 'activeSection', value: sectionId });
-
+    const request = store.put({key: 'activeSection', value: sectionId});
+    
     request.onsuccess = function () {
         console.log('Seção ativa salva com sucesso:', sectionId);
     };
-
+    
     request.onerror = function () {
         console.error('Erro ao salvar a seção ativa:', request.error);
     };
@@ -284,13 +284,13 @@ function loadActiveSection() {
     const transaction = db.transaction(['settings'], 'readonly');
     const store = transaction.objectStore('settings');
     const request = store.get('activeSection');
-
+    
     request.onsuccess = function () {
         const sectionId = request.result ? request.result.value : 'home-section';
         console.log('Seção ativa carregada:', sectionId);  // Log para verificar a recuperação
         showSection(sectionId);
     };
-
+    
     request.onerror = function () {
         console.error('Erro ao carregar a seção ativa:', request.error);
         showSection('home-section');
@@ -315,7 +315,7 @@ function saveReport(action, task) {
 function loadReports() {
     const reportsList = document.getElementById('reportsList');
     reportsList.innerHTML = '';
-
+    
     const reports = JSON.parse(localStorage.getItem('reports')) || [];
     reports.forEach(report => {
         const reportRow = document.createElement('tr');
@@ -358,11 +358,11 @@ function deleteTask(id) {
 function loadProjectsInSelect() {
     const projectSelect = document.getElementById('taskProject');
     projectSelect.innerHTML = '<option value="" disabled selected>Categoria</option>';
-
+    
     const transaction = db.transaction(['projects'], 'readonly');
     const store = transaction.objectStore('projects');
     const request = store.getAll();
-
+    
     request.onsuccess = function () {
         const projects = request.result;
         projects.forEach(project => {
@@ -378,7 +378,7 @@ function loadProjectsInSelect() {
 function saveProject(project) {
     const transaction = db.transaction(['projects'], 'readwrite');
     const store = transaction.objectStore('projects');
-
+    
     const request = store.get(project.id);
     request.onsuccess = function () {
         if (!request.result) {
@@ -390,17 +390,17 @@ function saveProject(project) {
 // Função para adicionar uma nova categoria
 function addProject(event) {
     event.preventDefault();
-
+    
     const projectName = document.getElementById('projectName').value.trim();
     const projectDueDate = new Date(document.getElementById('projectDueDate').value).toLocaleDateString('pt-BR');
-
+    
     if (projectName && projectDueDate) {
         const project = {
             id: Date.now(),
             name: projectName,
             dueDate: projectDueDate
         };
-
+        
         renderProject(project);
         saveProject(project);
         loadProjectsInSelect();
@@ -413,18 +413,18 @@ function addProject(event) {
 // Função para renderizar um projeto na tabela
 function renderProject(project) {
     const projectList = document.getElementById('projectList');
-
+    
     const projectRow = document.createElement('tr');
     projectRow.setAttribute('data-id', project.id);
-
+    
     projectRow.innerHTML = `
         <td>${project.name}</td>
         <td>${project.dueDate}</td>
         <td><button class="btn-delete-project">🗑️</button></td>
     `;
-
+    
     projectList.appendChild(projectRow);
-
+    
     projectRow.querySelector('.btn-delete-project').addEventListener('click', function () {
         projectList.removeChild(projectRow);
         deleteProject(project.id);
@@ -485,26 +485,26 @@ function startPausePomodoro() {
         timer = setInterval(function () {
             remainingTime--;
             updateDisplay();
-
+            
             if (remainingTime <= 0) {
                 clearInterval(timer);
                 isRunning = false;
                 document.getElementById('start-pause-button').textContent = 'START';
                 releaseWakeLock();
-
+                
                 // Registrar o ciclo ANTES de inverter isWorkTime
                 const status = isWorkTime ? 'Trabalho' : 'Pausa';
-
+                
                 // Tocar som de alerta quando o ciclo terminar
                 playSound();
-
+                
                 // Exibir notificação sem bloquear a execução
                 showNotification(`Fim da ${status}, próximo ciclo!`);
-
+                
                 // Adicionar o ciclo ao histórico ANTES de inverter isWorkTime
                 pomodoroHistory.push(`Fim da ${status} - ${new Date().toLocaleString()}`);
                 updateHistory(); // Atualiza a UI do histórico
-
+                
                 // Agora inverter isWorkTime para preparar o próximo ciclo
                 isWorkTime = !isWorkTime;
                 remainingTime = isWorkTime ? workDuration : breakDuration;
@@ -540,7 +540,7 @@ function saveSettings() {
 function updateHistory() {
     const historyList = document.getElementById('pomodoro-history');
     historyList.innerHTML = '';
-
+    
     pomodoroHistory.forEach((entry, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = `Ciclo ${pomodoroHistory.length - index}: ${entry}`;
@@ -608,14 +608,14 @@ function openDB() {
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
             if (!db.objectStoreNames.contains('themeStore')) {
-                db.createObjectStore('themeStore', { keyPath: 'id' });
+                db.createObjectStore('themeStore', {keyPath: 'id'});
             }
         };
-
+        
         request.onsuccess = function (event) {
             resolve(event.target.result);
         };
-
+        
         request.onerror = function (event) {
             reject('Erro ao abrir o IndexedDB:', event.target.errorCode);
         };
@@ -627,7 +627,7 @@ function saveThemeToDB(theme) {
     openDB().then(db => {
         const transaction = db.transaction(['themeStore'], 'readwrite');
         const store = transaction.objectStore('themeStore');
-        store.put({ id: 'theme', mode: theme });
+        store.put({id: 'theme', mode: theme});
     });
 }
 
@@ -638,11 +638,11 @@ function loadThemeFromDB() {
             const transaction = db.transaction(['themeStore'], 'readonly');
             const store = transaction.objectStore('themeStore');
             const request = store.get('theme');
-
+            
             request.onsuccess = function (event) {
                 resolve(event.target.result ? event.target.result.mode : null);
             };
-
+            
             request.onerror = function (event) {
                 reject('Erro ao carregar o tema:', event.target.errorCode);
             };
