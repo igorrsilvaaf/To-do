@@ -595,41 +595,103 @@ fullscreenButton.addEventListener('click', () => {
 });
 
 // Theme dark
-// Botão de alternância de tema
+// Referências aos elementos
 const themeToggle = document.getElementById('theme-toggle');
 const themeIcon = document.getElementById('theme-icon');
+const themeText = document.getElementById('theme-text');
 
-// Função para alternar tema
+// Função para abrir o banco de dados IndexedDB
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('themeDB', 1);
+        
+        request.onupgradeneeded = function (event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('themeStore')) {
+                db.createObjectStore('themeStore', { keyPath: 'id' });
+            }
+        };
+
+        request.onsuccess = function (event) {
+            resolve(event.target.result);
+        };
+
+        request.onerror = function (event) {
+            reject('Erro ao abrir o IndexedDB:', event.target.errorCode);
+        };
+    });
+}
+
+// Função para salvar o tema no IndexedDB
+function saveThemeToDB(theme) {
+    openDB().then(db => {
+        const transaction = db.transaction(['themeStore'], 'readwrite');
+        const store = transaction.objectStore('themeStore');
+        store.put({ id: 'theme', mode: theme });
+    });
+}
+
+// Função para carregar o tema do IndexedDB
+function loadThemeFromDB() {
+    return new Promise((resolve, reject) => {
+        openDB().then(db => {
+            const transaction = db.transaction(['themeStore'], 'readonly');
+            const store = transaction.objectStore('themeStore');
+            const request = store.get('theme');
+
+            request.onsuccess = function (event) {
+                resolve(event.target.result ? event.target.result.mode : null);
+            };
+
+            request.onerror = function (event) {
+                reject('Erro ao carregar o tema:', event.target.errorCode);
+            };
+        });
+    });
+}
+
+// Função para alternar o tema
 function toggleTheme() {
     if (document.body.classList.contains('dark-mode')) {
+        // Mudar para Light Mode
         document.body.classList.remove('dark-mode');
         document.body.classList.add('light-mode');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun'); // Ícone de sol para Light Mode
-        localStorage.setItem('theme', 'light');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        themeText.textContent = "Dark Mode";
+        saveThemeToDB('light');
     } else {
+        // Mudar para Dark Mode
         document.body.classList.remove('light-mode');
         document.body.classList.add('dark-mode');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon'); // Ícone de lua para Dark Mode
-        localStorage.setItem('theme', 'dark');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        themeText.textContent = "Light Mode";
+        saveThemeToDB('dark'); // Salvar o tema no IndexedDB
     }
 }
 
-// Verifica o tema salvo no localStorage
+// Função para carregar o tema ao iniciar a página
 function loadTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        themeIcon.classList.add('fa-moon');
-    } else {
-        document.body.classList.add('light-mode');
-        themeIcon.classList.add('fa-sun');
-    }
+    loadThemeFromDB().then(savedTheme => {
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            themeText.textContent = "Light Mode";
+        } else {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            themeText.textContent = "Dark Mode";
+        }
+    }).catch(error => {
+        console.error('Erro ao carregar o tema:', error);
+    });
 }
 
 // Evento de clique para alternar o tema
 themeToggle.addEventListener('click', toggleTheme);
 
-// Carrega o tema ao iniciar a página
+// Carregar o tema ao iniciar a página
 window.addEventListener('load', loadTheme);

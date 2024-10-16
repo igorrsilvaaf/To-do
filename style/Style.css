@@ -353,7 +353,7 @@ p {
         position: fixed;
         top: -100%;
         width: 100%;
-        height: auto;
+        height: 320px;
         transition: top 0.3s ease;
     }
 
@@ -794,14 +794,22 @@ p {
 }
 
 #theme-icon {
+    margin-left: 2px;
     position: relative;
+    color: white;
+    font-size: 16px;
+}
+
+#theme-text {
+    font-size: 16px;
+    margin-left: 2px;
     color: white;
 }
 
 .theme-toggle-container {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 28px;
+    left: 22px;
     transform: translateX(0);
 }
 
@@ -815,7 +823,7 @@ p {
 @media (max-width: 768px) {
     .theme-toggle {
         font-size: 1rem;
-        margin-left: 300px;
+        margin: 0 0 -40px;
     }
 }
 
