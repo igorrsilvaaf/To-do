@@ -900,6 +900,10 @@ body.dark-mode .task-form textarea::placeholder {
     color: white;
 }
 
+body.dark-mode #editor {
+    color: black;
+}
+
 /* Pomodoro */
 body.dark-mode .pomodoro-container {
     background-color: #40d479;
