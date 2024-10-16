@@ -63,12 +63,6 @@ body {
     font-size: 24px;
 }
 
-#theme-text {
-    font-size: 16px;
-    margin-left: -1px;
-    color: white;
-}
-
 /* Conteúdo principal */
 .main-content {
     flex: 1;

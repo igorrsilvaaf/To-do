@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="424dafaa-11bb-4335-beb7-c5a3f23d31c7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sonar-project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/Style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +86,7 @@
       <workItem from="1729044584318" duration="753000" />
       <workItem from="1729050118005" duration="1521000" />
       <workItem from="1729098179289" duration="2447000" />
-      <workItem from="1729100987633" duration="983000" />
+      <workItem from="1729100987633" duration="3197000" />
     </task>
     <servers />
   </component>
