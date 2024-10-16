@@ -199,23 +199,6 @@ function renderTask(task) {
     const taskRow = document.createElement('tr');
     taskRow.setAttribute('data-id', task.id);
 
-    // Define a cor com base no status
-    let statusColorClass = '';
-    switch (task.status) {
-        case 'Pendente':
-            statusColorClass = 'status-pendente';
-            break;
-        case 'Em andamento':
-            statusColorClass = 'status-em-andamento';
-            break;
-        case 'Cancelada':
-            statusColorClass = 'status-cancelada';
-            break;
-        case 'Concluída':
-            statusColorClass = 'status-concluida';
-            break;
-    }
-
     taskRow.innerHTML = `
         <td>${task.text}</td>
         <td>
