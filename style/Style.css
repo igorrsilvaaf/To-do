@@ -134,6 +134,34 @@ p {
     border-bottom: 1px solid #ddd;
 }
 
+/* Estilização para o contêiner que agrupa Data e Categoria */
+.date-category-group {
+    display: flex;
+    gap: 10px;
+}
+
+.date-category-group input {
+    flex: 0.2;
+    padding: 10px;
+    font-size: 1rem;
+}
+.date-category-group select {
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .date-category-group {
+        flex-direction: column;
+    }
+
+    .date-category-group input,
+    .date-category-group select {
+        flex: 1;
+    }
+}
+
 .task-table td {
     font-size: 1rem;
     color: #555;
