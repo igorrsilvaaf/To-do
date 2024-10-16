@@ -311,7 +311,8 @@ p {
 
 #editor {
     margin-top: 14px;
-    min-height: 800px;
+    min-height: 400px;
+    height: auto;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
