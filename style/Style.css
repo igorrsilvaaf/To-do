@@ -861,6 +861,10 @@ body.dark-mode #taskList td {
     color: white;
 }
 
+body.dark-mode #reportsList tr:hover{
+    background-color: #44475a;
+}
+
 body.dark-mode .task-form input,
 body.dark-mode .task-form select,
 body.dark-mode .task-form textarea {
@@ -887,6 +891,28 @@ body.dark-mode .task-form input::placeholder,
 body.dark-mode .task-form textarea::placeholder {
     color: white;
 }
+
+/* Pomodoro */
+body.dark-mode .pomodoro-container {
+    background-color: #40d479;
+}
+
+body.dark-mode .settings {
+    background-color: #40d479;
+}
+
+body.dark-mode #start-pause-button {
+    color: #282a36;
+}
+
+body.dark-mode #reset-button {
+    color: #282a36;
+}
+
+body.dark-mode #save-settings-button {
+    color: #282a36;
+}
+
 
 /* Tema claro */
 body.light-mode {
