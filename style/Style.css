@@ -311,7 +311,8 @@ p {
 
 #editor {
     margin-top: 14px;
-    min-height: 800px;
+    min-height: 400px;
+    height: auto;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
@@ -898,6 +899,10 @@ body.dark-mode .task-form label {
 body.dark-mode .task-form input::placeholder,
 body.dark-mode .task-form textarea::placeholder {
     color: white;
+}
+
+body.dark-mode #editor {
+    color: black;
 }
 
 /* Pomodoro */
