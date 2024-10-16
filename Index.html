@@ -14,7 +14,9 @@
 
 <body>
     <!-- Botão de Menu (Hambúrguer) -->
-    <button id="menu-toggle" class="menu-toggle">☰</button>
+    <button id="menu-toggle" class="menu-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
 
     <!-- Painel Lateral -->
     <div class="sidebar">
@@ -24,14 +26,20 @@
         </div>
         <nav>
             <ul>
-                <li id="menu-home">✅ Tarefas </li>
-                <li id="menu-projects">🗒️ Categorias
+                <li id="menu-home">
+                    <i class="fa-solid fa-list-check"></i> Tarefas
+                </li>
+                <li id="menu-projects"> <i class="fa-solid fa-folder-tree"></i> Categorias
                     <ul>
-                        <li id="menu-notebook">📒 Caderno</li>
+                        <li id="menu-notebook"><i class="fa-solid fa-book"></i> Caderno</li>
                     </ul>
                 </li>
-                <li id="menu-reports">📈 Relatório </li>
-                <li id="menu-pomodoro">⏳ Pomodoro</li>
+                <li id="menu-reports">
+                    <i class="fa-solid fa-chart-line"></i> Relatório
+                </li>
+                <li id="menu-pomodoro">
+                    <i class="fa-solid fa-hourglass-half"></i> Pomodoro
+                </li>
             </ul>
         </nav>
         <div class="theme-toggle-container">
