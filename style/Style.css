@@ -941,6 +941,16 @@ body.dark-mode #editor {
     color: black;
 }
 
+body.dark-mode #projectName {
+    background-color: #44475a;
+    color: white;
+}
+
+body.dark-mode #projectDueDate {
+    background-color: #44475a;
+    color: white;
+}
+
 /* Pomodoro */
 body.dark-mode .pomodoro-container {
     background-color: #40d479;
