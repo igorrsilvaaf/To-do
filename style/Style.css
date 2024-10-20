@@ -40,7 +40,7 @@ body {
 }
 
 .sidebar-logo {
-    width: 20px;
+    width: 48px;
     height: auto;
     border-radius: 50%;
 }
@@ -948,6 +948,11 @@ body.dark-mode #projectName {
 
 body.dark-mode #projectDueDate {
     background-color: #44475a;
+    color: white;
+}
+
+body.dark-mode .reports-table th{
+   background-color: transparent;
     color: white;
 }
 

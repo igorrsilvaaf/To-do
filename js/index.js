@@ -162,8 +162,13 @@ function loadProjects() {
 function saveTask(task) {
     const transaction = db.transaction(['tasks'], 'readwrite');
     const store = transaction.objectStore('tasks');
-
-    store.put(task);
+    
+    const request = store.get(task.id);
+    request.onsuccess = (() => {
+        if (!request.result) {
+            store.put(task)
+        }
+    })
 }
 
 // Função que cria um objeto de tarefa

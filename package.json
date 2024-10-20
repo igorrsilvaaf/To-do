@@ -1,13 +1,10 @@
 {
     "devDependencies": {
         "electron": "^33.0.1",
+        "electron-builder": "^25.1.8",
         "electron-packager": "^17.1.2",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0"
-    },
-    "scripts": {
-        "start": "electron .",
-        "test": "jest"
     },
     "jest": {
         "testEnvironment": "jest-environment-jsdom"
@@ -16,8 +13,17 @@
     "version": "1.0.1",
     "description": "to-do-lis e pomodoro",
     "main": "js/exe.js",
-    "directories": {
-        "test": "tests"
+    "scripts": {
+        "start": "electron .",
+        "dist": "electron-builder",
+        "test": "jest"
+    },
+    "build": {
+        "appId": "com.todo.list",
+        "win": {
+            "target": "nsis",
+            "icon": "Imagens/check.ico"
+        }
     },
     "dependencies": {
         "abab": "^2.0.6",
