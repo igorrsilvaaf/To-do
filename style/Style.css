@@ -56,11 +56,29 @@ body {
     cursor: pointer;
 }
 
-.theme-toggle #theme-icon {
-    margin-left: 2px;
-    position: relative;
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
     color: white;
-    font-size: 24px;
+    cursor: pointer;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+}
+
+#theme-icon {
+    margin-right: 2px;
+    font-size: 1.4rem;
 }
 
 /* Conteúdo principal */
@@ -148,17 +166,6 @@ p {
     flex: 1;
     padding: 10px;
     font-size: 1rem;
-}
-
-@media (max-width: 768px) {
-    .date-category-group {
-        flex-direction: column;
-    }
-
-    .date-category-group input,
-    .date-category-group select {
-        flex: 1;
-    }
 }
 
 .task-table td {
@@ -393,8 +400,8 @@ p {
     .sidebar {
         position: fixed;
         top: -100%;
-        width: 100%;
-        height: 320px;
+        width: 80%;
+        height: 50%;
         transition: top 0.3s ease;
     }
 
@@ -428,6 +435,84 @@ p {
     #editor-toolbar button {
         padding: 6px 10px;
         font-size: 0.8rem;
+    }
+
+     .fullscreen-button {
+        bottom: -10px;
+        right: -5px;
+        font-size: 1.4rem;
+    }
+
+         .pomodoro-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .time-settings {
+        flex-direction: row;
+    }
+
+    .time-settings #work-time {
+        margin-top: 10px;
+        width: 80px;
+    }
+
+    .time-settings #break-time {
+        margin-top: 10px;
+        width: 80px;
+    }
+
+    .timer {
+        font-size: 4rem;
+    }
+
+    .controls {
+        flex-direction: row;
+        gap: 1px;
+    }
+
+    .controls button {
+        padding: 12px 20px;
+        font-size: 1.2rem;
+    }
+
+    .settings input {
+        width: 20%;
+        padding: 8px;
+        margin: -18px;
+    }
+
+    .settings {
+        padding: 10px;
+    }
+
+    .history {
+        padding: 10px;
+    }
+
+    .date-category-group {
+        flex-direction: column;
+    }
+
+    .date-category-group input,
+    .date-category-group select {
+        flex: 1;
+    }
+
+    .theme-toggle {
+        font-size: 1rem;
+        padding: 2px 16px;
+        margin-left: -20px;
+    }
+
+    #theme-icon {
+        font-size: 1.2rem;
+        margin-right: 8px;
+    }
+
+    .download-btn {
+        font-size: 0.9rem;
+        padding: 2px 16px;
     }
 }
 
@@ -611,14 +696,6 @@ p {
     outline: none;
 }
 
-@media (max-width: 768px) {
-    .fullscreen-button {
-        bottom: -10px;
-        right: -5px;
-        font-size: 1.4rem;
-    }
-}
-
 .settings {
     display: flex;
     flex-direction: column;
@@ -765,55 +842,6 @@ p {
     }
 }
 
-@media (max-width: 768px) {
-    .pomodoro-container {
-        padding: 20px;
-        max-width: 100%;
-    }
-
-    .time-settings {
-        flex-direction: row;
-    }
-
-    .time-settings #work-time {
-        margin-top: 10px;
-        width: 80px;
-    }
-
-    .time-settings #break-time {
-        margin-top: 10px;
-        width: 80px;
-    }
-
-    .timer {
-        font-size: 4rem;
-    }
-
-    .controls {
-        flex-direction: row;
-        gap: 1px;
-    }
-
-    .controls button {
-        padding: 12px 20px;
-        font-size: 1.2rem;
-    }
-
-    .settings input {
-        width: 20%;
-        padding: 8px;
-        margin: -18px;
-    }
-
-    .settings {
-        padding: 10px;
-    }
-
-    .history {
-        padding: 10px;
-    }
-}
-
 @media (max-width: 480px) {
     .timer {
         font-size: 3rem;
@@ -831,40 +859,6 @@ p {
 
     .settings button {
         font-size: 1rem;
-    }
-}
-
-#theme-icon {
-    margin-left: 2px;
-    position: relative;
-    color: white;
-    font-size: 18px;
-}
-
-#theme-text {
-    font-size: 16px;
-    margin-left: -1px;
-    color: white;
-}
-
-.theme-toggle-container {
-    position: absolute;
-    bottom: 37px;
-    left: 16px;
-    transform: translateX(0);
-}
-
-.theme-toggle {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.6rem;
-}
-
-@media (max-width: 768px) {
-    .theme-toggle {
-        font-size: 1.5rem;
-        margin: 0 0 -40px;
     }
 }
 
@@ -1011,7 +1005,13 @@ body.light-mode .task-form label {
     color: #007bff;
 }
 
-/* Estilo para o botão de download do instalador */
+/* Botão de download posicionado no final */
+.download-container {
+    text-align: left;
+    margin-top: 520px;
+}
+
+/* Estilo do botão de download */
 .download-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -1033,26 +1033,4 @@ body.light-mode .task-form label {
 
 .download-btn i {
     margin-right: 10px;
-}
-
-/* Modo escuro */
-body.dark-mode .download-btn {
-    background-color: #50fa7b;
-    color: #282a36;
-}
-
-body.dark-mode .download-btn:hover {
-    background-color: #40d479;
-    transform: translateY(-2px);
-}
-
-/* Modo claro */
-body.light-mode .download-btn {
-    background-color: #4CAF50;
-    color: white;
-}
-
-body.light-mode .download-btn:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
 }
