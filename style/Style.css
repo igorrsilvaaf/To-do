@@ -1010,3 +1010,49 @@ body.light-mode a,
 body.light-mode .task-form label {
     color: #007bff;
 }
+
+/* Estilo para o botão de download do instalador */
+.download-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+
+.download-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.download-btn i {
+    margin-right: 10px;
+}
+
+/* Modo escuro */
+body.dark-mode .download-btn {
+    background-color: #50fa7b;
+    color: #282a36;
+}
+
+body.dark-mode .download-btn:hover {
+    background-color: #40d479;
+    transform: translateY(-2px);
+}
+
+/* Modo claro */
+body.light-mode .download-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+body.light-mode .download-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
