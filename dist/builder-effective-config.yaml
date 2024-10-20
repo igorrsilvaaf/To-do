@@ -1,0 +1,9 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.todo.list
+win:
+  target: nsis
+  icon: Imagens/check.ico
+files: []
+electronVersion: 33.0.1
