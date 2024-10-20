@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="424dafaa-11bb-4335-beb7-c5a3f23d31c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sonar-project.properties" beforeDir="false" afterPath="$PROJECT_DIR$/sonar-project.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/builder-debug.yml" beforeDir="false" afterPath="$PROJECT_DIR$/dist/builder-debug.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/latest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/dist/latest.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/to-do-list Setup 1.0.1.exe.blockmap" beforeDir="false" afterPath="$PROJECT_DIR$/dist/to-do-list Setup 1.0.1.exe.blockmap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/win-unpacked/resources/app.asar" beforeDir="false" afterPath="$PROJECT_DIR$/dist/win-unpacked/resources/app.asar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/exe.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/exe.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +122,7 @@
       <workItem from="1729189289645" duration="6341000" />
       <workItem from="1729373243277" duration="52000" />
       <workItem from="1729373324658" duration="6472000" />
-      <workItem from="1729382095351" duration="7700000" />
+      <workItem from="1729382095351" duration="8733000" />
     </task>
     <servers />
   </component>
