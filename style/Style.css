@@ -386,15 +386,22 @@ p {
 
 /* Responsividade para smartphones */
 @media (max-width: 768px) {
+    .theme-toggle-container {
+        position: absolute;
+        bottom: 10px;
+        left: 16px;
+        display: flex;
+        justify-content: left;
+    }
+
     .menu-toggle {
         display: block;
     }
 
     .sidebar {
         position: fixed;
-        top: -100%;
-        width: 100%;
-        height: 320px;
+        width: 80%;
+        height: 100%;
         transition: top 0.3s ease;
     }
 
@@ -989,6 +996,15 @@ body.light-mode {
     color: #000000;
 }
 
+body.light-mode .sidebar {
+    background-color: #8be9fd;
+}
+
+body.light-mode .sidebar ul {
+    color: black;
+    font-weight: bolder;
+}
+
 body.light-mode .task-form input,
 body.light-mode .task-form select,
 body.light-mode .task-form textarea {
@@ -1014,8 +1030,8 @@ body.light-mode .task-form label {
 /* Estilo para o botão de download do instalador */
 .download-btn {
     display: inline-block;
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: 10px 12px;
+    font-size: 0.9rem;
     font-weight: bold;
     color: white;
     background-color: #4CAF50;
@@ -1032,7 +1048,7 @@ body.light-mode .task-form label {
 }
 
 .download-btn i {
-    margin-right: 10px;
+    margin-right: 2px;
 }
 
 /* Modo escuro */
@@ -1048,11 +1064,20 @@ body.dark-mode .download-btn:hover {
 
 /* Modo claro */
 body.light-mode .download-btn {
-    background-color: #4CAF50;
+    background-color: #44475a;
     color: white;
 }
 
 body.light-mode .download-btn:hover {
     background-color: #45a049;
     transform: translateY(-2px);
+}
+
+body.light-mode .theme-toggle #theme-text {
+    color: black;
+    font-weight: bolder;
+}
+
+body.light-mode .theme-toggle #theme-icon {
+    color: black;
 }
