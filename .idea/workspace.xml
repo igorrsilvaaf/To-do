@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="424dafaa-11bb-4335-beb7-c5a3f23d31c7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.sonarlint/connectedMode.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/style/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/Style.css" afterDir="false" />
     </list>
@@ -125,7 +125,7 @@
       <workItem from="1729453022057" duration="8197000" />
       <workItem from="1729810564390" duration="3341000" />
       <workItem from="1729871738670" duration="383000" />
-      <workItem from="1729872187648" duration="4189000" />
+      <workItem from="1729872187648" duration="10309000" />
     </task>
     <servers />
   </component>

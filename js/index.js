@@ -273,8 +273,6 @@ function addTask(event) {
     } catch (error) {
         alert(error.message);
     }
-
-    module.exports = { addTask };
 }
 
 /**

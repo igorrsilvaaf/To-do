@@ -945,8 +945,13 @@ body.dark-mode .task-form label {
 
 body.dark-mode .task-form input::placeholder,
 body.dark-mode .task-form textarea::placeholder {
-    color: white;
+    color: rgba(139, 233, 253, 0.2);
 }
+
+body.dark-mode .date-category-group select option:disabled {
+    color: rgba(139, 233, 253, 0.2);
+}
+
 
 body.dark-mode #editor {
     color: black;
