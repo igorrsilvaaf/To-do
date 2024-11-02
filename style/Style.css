@@ -150,17 +150,6 @@ p {
     font-size: 1rem;
 }
 
-@media (max-width: 768px) {
-    .date-category-group {
-        flex-direction: column;
-    }
-
-    .date-category-group input,
-    .date-category-group select {
-        flex: 1;
-    }
-}
-
 .task-table td {
     font-size: 1rem;
     color: #555;
@@ -329,10 +318,28 @@ p {
 
 /* Estilo para o Caderno */
 .editor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
+    max-width: 800px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#editor {
+    width: 100%;
+    margin-top: 14px;
+    min-height: 500px;
+    height: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
 #editor-toolbar select {
@@ -349,15 +356,6 @@ p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#editor {
-    margin-top: 14px;
-    min-height: 400px;
-    height: auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
 
 /* Responsividade para tablets */
 @media (max-width: 1024px) {
@@ -374,7 +372,7 @@ p {
     }
 
     #editor {
-        height: calc(100vh - 250px);
+        height: calc(90vh - 250px);
     }
 
     #notebook-section select,
@@ -435,6 +433,73 @@ p {
     #editor-toolbar button {
         padding: 6px 10px;
         font-size: 0.8rem;
+    }
+
+    .date-category-group {
+        flex-direction: column;
+    }
+
+    .date-category-group input,
+    .date-category-group select {
+        flex: 1;
+    }
+
+    .fullscreen-button {
+        bottom: -10px;
+        right: -5px;
+        font-size: 1.4rem;
+    }
+
+    .pomodoro-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .time-settings {
+        flex-direction: row;
+    }
+
+    .time-settings #work-time {
+        margin-top: 10px;
+        width: 80px;
+    }
+
+    .time-settings #break-time {
+        margin-top: 10px;
+        width: 80px;
+    }
+
+    .timer {
+        font-size: 4rem;
+    }
+
+    .controls {
+        flex-direction: row;
+        gap: 1px;
+    }
+
+    .controls button {
+        padding: 12px 20px;
+        font-size: 1.2rem;
+    }
+
+    .settings input {
+        width: 20%;
+        padding: 8px;
+        margin: -18px;
+    }
+
+    .settings {
+        padding: 10px;
+    }
+
+    .history {
+        padding: 10px;
+    }
+
+    .theme-toggle {
+        font-size: 1.5rem;
+        margin: 0 0 -40px;
     }
 }
 
@@ -515,6 +580,24 @@ p {
     #editor-toolbar button {
         padding: 5px 8px;
         font-size: 0.75rem;
+    }
+
+    .timer {
+        font-size: 3rem;
+    }
+
+    .controls button {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .settings h2,
+    .history h2 {
+        font-size: 1.2rem;
+    }
+
+    .settings button {
+        font-size: 1rem;
     }
 }
 
@@ -616,14 +699,6 @@ p {
 
 .fullscreen-button:focus {
     outline: none;
-}
-
-@media (max-width: 768px) {
-    .fullscreen-button {
-        bottom: -10px;
-        right: -5px;
-        font-size: 1.4rem;
-    }
 }
 
 .settings {
@@ -772,75 +847,6 @@ p {
     }
 }
 
-@media (max-width: 768px) {
-    .pomodoro-container {
-        padding: 20px;
-        max-width: 100%;
-    }
-
-    .time-settings {
-        flex-direction: row;
-    }
-
-    .time-settings #work-time {
-        margin-top: 10px;
-        width: 80px;
-    }
-
-    .time-settings #break-time {
-        margin-top: 10px;
-        width: 80px;
-    }
-
-    .timer {
-        font-size: 4rem;
-    }
-
-    .controls {
-        flex-direction: row;
-        gap: 1px;
-    }
-
-    .controls button {
-        padding: 12px 20px;
-        font-size: 1.2rem;
-    }
-
-    .settings input {
-        width: 20%;
-        padding: 8px;
-        margin: -18px;
-    }
-
-    .settings {
-        padding: 10px;
-    }
-
-    .history {
-        padding: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .timer {
-        font-size: 3rem;
-    }
-
-    .controls button {
-        padding: 10px 15px;
-        font-size: 1rem;
-    }
-
-    .settings h2,
-    .history h2 {
-        font-size: 1.2rem;
-    }
-
-    .settings button {
-        font-size: 1rem;
-    }
-}
-
 #theme-icon {
     margin-left: 2px;
     position: relative;
@@ -866,13 +872,6 @@ p {
     border: none;
     cursor: pointer;
     font-size: 1.6rem;
-}
-
-@media (max-width: 768px) {
-    .theme-toggle {
-        font-size: 1.5rem;
-        margin: 0 0 -40px;
-    }
 }
 
 /* Dark mode */
@@ -946,8 +945,13 @@ body.dark-mode .task-form label {
 
 body.dark-mode .task-form input::placeholder,
 body.dark-mode .task-form textarea::placeholder {
-    color: white;
+    color: rgba(139, 233, 253, 0.2);
 }
+
+body.dark-mode .date-category-group select option:disabled {
+    color: rgba(139, 233, 253, 0.2);
+}
+
 
 body.dark-mode #editor {
     color: black;

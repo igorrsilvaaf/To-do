@@ -168,7 +168,7 @@ function saveTask(task) {
         if (!request.result) {
             store.put(task)
         }
-    })
+    });
 }
 
 // Função que cria um objeto de tarefa
@@ -194,7 +194,9 @@ function addTask(event) {
     event.preventDefault();
     const taskText = document.getElementById('taskName').value.trim();
     const taskType = document.getElementById('taskType').value.trim();
-    const taskDueDate = new Date(document.getElementById('taskDueDate').value).toLocaleDateString('pt-BR');
+    const taskDueDate = new Date(document.getElementById('taskDueDate').value).toLocaleString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    }).replace(',', ` -- `);
     const taskResponsible = document.getElementById('taskResponsible').value.trim();
     const taskProject = document.getElementById('taskProject').value;
     const taskObservation = document.getElementById('taskObservation').value.trim();
@@ -210,8 +212,6 @@ function addTask(event) {
     } catch (error) {
         alert(error.message);
     }
-
-    module.exports = { addTask };
 }
 
 // Função para renderizar a tarefa na tabela
@@ -717,3 +717,30 @@ themeToggle.addEventListener('click', toggleTheme);
 
 // Carregar o tema ao iniciar a página
 window.addEventListener('load', loadTheme);
+
+// Funçao para salvar o conteudo do editor de texto
+function saveEditorText() {
+    const editorText = document.getElementById('editor').innerHTML;
+    localStorage.setItem('editorText', editorText);
+}
+
+// Função para carregar o conteudo do editor de texto
+function loadEditorText() {
+    const saveText = localStorage.getItem('editorText');
+    if (saveText) {
+        document.getElementById('editor').innerHTML = saveText;
+    }
+}
+
+// Adiciona o evento de salvamento automatico ao editar
+function editorAutoSave() {
+    const editor = document.getElementById('editor');
+    if (editor) {
+        editor.addEventListener('input', saveEditorText);
+    }
+}
+
+window.addEventListener('load', () => {
+   loadEditorText();
+   editorAutoSave();
+});
