@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="424dafaa-11bb-4335-beb7-c5a3f23d31c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/todo.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eslint.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/addTask.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/addTask.test.js" afterDir="false" />
-    </list>
+    <list default="true" id="424dafaa-11bb-4335-beb7-c5a3f23d31c7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -143,7 +138,7 @@
       <workItem from="1730759456316" duration="4730000" />
       <workItem from="1730929951775" duration="607000" />
       <workItem from="1730930691273" duration="913000" />
-      <workItem from="1730931703823" duration="824000" />
+      <workItem from="1730931703823" duration="1676000" />
     </task>
     <servers />
   </component>
