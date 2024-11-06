@@ -10,8 +10,8 @@ export default [
         ...globals.node,
         ...globals.jest,
       },
-      ecmaVersion: 12,          // Define a versão do ECMAScript (ECMAScript 12 - ES2021)
-      sourceType: 'module',      // Define o tipo de módulo
+      ecmaVersion: 12,
+      sourceType: 'module',
     },
   },
   {
@@ -21,13 +21,8 @@ export default [
         ...globals.node,
         ...globals.jest,
       },
-    },
-    env: {
-      browser: true,
-      node: true,
-      jest: true,
-      es6: true,
-      commonjs: true,
+      ecmaVersion: 12,
+      sourceType: 'module',
     },
     rules: {
       // Adicione ou ajuste as regras personalizadas aqui
