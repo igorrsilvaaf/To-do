@@ -172,7 +172,7 @@ function saveTask(task) {
 }
 
 // Função que cria um objeto de tarefa
-function createTask(taskText, taskType, taskDueDate, taskResponsible, taskProject = '', taskObservation = '') {
+export function createTask(taskText, taskType, taskDueDate, taskResponsible, taskProject = '', taskObservation = '') {
     if (!taskText || !taskType || !taskDueDate || !taskResponsible) {
         throw new Error('Todos os campos obrigatórios devem ser preenchidos');
     }
@@ -190,7 +190,7 @@ function createTask(taskText, taskType, taskDueDate, taskResponsible, taskProjec
 }
 
 // Função para adicionar uma nova tarefa
-function addTask(event) {
+export function addTask(event) {
     event.preventDefault();
     const taskText = document.getElementById('taskName').value.trim();
     const taskType = document.getElementById('taskType').value.trim();

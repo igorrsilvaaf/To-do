@@ -1,6 +1,7 @@
-import { addTask } from '../js/index.js';
-import createTask from '../js/index.js'; 
-import '../js/index.js'; 
+import { addTask } from '../js';
+import { createTask } from '../js';
+import '../js/index.js';
+import {jest} from "globals";
 
 jest.mock('../js/index.js'); // Mock da função createTask
 
