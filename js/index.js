@@ -52,33 +52,39 @@ function setPageTitle(title) {
     document.getElementById('page-title').textContent = title;
 }
 
-// Vincular eventos de clique no menu lateral
-const menuItems = [
-    { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
-    { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
-    { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
-    { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' },
-    { id: 'menu-pomodoro', section: 'pomodoro-section', title: 'Pomodoro ⏳' }
-];
+export function initializeMenuItems() {
+    const menuItems = [
+        { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
+        { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
+        { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
+        { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' },
+        { id: 'menu-pomodoro', section: 'pomodoro-section', title: 'Pomodoro ⏳' }
+    ];
 
-menuItems.forEach(item => {
-    document.getElementById(item.id).addEventListener('click', function (event) {
-        event.stopPropagation();
-        event.preventDefault();
+    menuItems.forEach(item => {
+        const element = document.getElementById(item.id);
+        if (element) {
+            element.addEventListener('click', function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                showSection(item.section);
+                setPageTitle(item.title);
 
-        showSection(item.section);
-        setPageTitle(item.title);
+                if (window.innerWidth <= 768) {
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar) {
+                        sidebar.classList.remove('active');
+                        sidebar.style.display = 'none';
+                    }
+                }
 
-        if (window.innerWidth <= 768) {
-            sidebar.classList.remove('active');
-            sidebar.style.display = 'none';
-        }
-
-        if (item.id === 'menu-reports') {
-            loadReports();
+                if (item.id === 'menu-reports') {
+                    loadReports();
+                }
+            });
         }
     });
-});
+}
 
 // Inicializar mostrando a Home
 window.addEventListener('load', function () {
@@ -87,37 +93,38 @@ window.addEventListener('load', function () {
     sidebar.style.display = 'none';
 });
 
-// Iniciando o IndexDB
 let db;
-const request = indexedDB.open('TaskManagerDB', 2);
 
-request.onupgradeneeded = function (event) {
-    db = event.target.result;
+export function initializeIndexedDB() {
+    const request = indexedDB.open('TaskManagerDB', 2);
 
-    // Criação de stores
-    if (!db.objectStoreNames.contains('tasks')) {
-        db.createObjectStore('tasks', { keyPath: 'id' });
-    }
-    if (!db.objectStoreNames.contains('projects')) {
-        db.createObjectStore('projects', { keyPath: 'id' });
-    }
-    if (!db.objectStoreNames.contains('settings')) {
-        db.createObjectStore('settings', { keyPath: 'key' });
-        console.log('Store settings criada ...')
-    }
+    request.onupgradeneeded = function (event) {
+        db = event.target.result;
+
+        if (!db.objectStoreNames.contains('tasks')) {
+            db.createObjectStore('tasks', { keyPath: 'id' });
+        }
+        if (!db.objectStoreNames.contains('projects')) {
+            db.createObjectStore('projects', { keyPath: 'id' });
+        }
+        if (!db.objectStoreNames.contains('settings')) {
+            db.createObjectStore('settings', { keyPath: 'key' });
+            console.log('Store settings criada ...');
+        }
+    };
+
+    request.onsuccess = function (event) {
+        db = event.target.result;
+        loadActiveSection();
+        loadTasks();
+        loadProjects();
+    };
+
+    request.onerror = function (event) {
+        console.error('Erro ao abrir IndexedDB', event.target.errorCode);
+        showSection('home-section');
+    };
 }
-
-request.onsuccess = function (event) {
-    db = event.target.result;
-    loadActiveSection();
-    loadTasks();
-    loadProjects();
-};
-
-request.onerror = function (event) {
-    console.error('Erro ao abrir IndexedDB', event.target.errorCode);
-    showSection('home-section');
-};
 
 let taskLoaded = false;
 let projectsLoaded = false;
@@ -172,7 +179,7 @@ function saveTask(task) {
 }
 
 // Função que cria um objeto de tarefa
-function createTask(taskText, taskType, taskDueDate, taskResponsible, taskProject = '', taskObservation = '') {
+export function createTask(taskText, taskType, taskDueDate, taskResponsible, taskProject = '', taskObservation = '') {
     if (!taskText || !taskType || !taskDueDate || !taskResponsible) {
         throw new Error('Todos os campos obrigatórios devem ser preenchidos');
     }
@@ -190,7 +197,7 @@ function createTask(taskText, taskType, taskDueDate, taskResponsible, taskProjec
 }
 
 // Função para adicionar uma nova tarefa
-function addTask(event) {
+export function addTask(event) {
     event.preventDefault();
     const taskText = document.getElementById('taskName').value.trim();
     const taskType = document.getElementById('taskType').value.trim();
@@ -215,7 +222,7 @@ function addTask(event) {
 }
 
 // Função para renderizar a tarefa na tabela
-function renderTask(task) {
+export function renderTask(task) {
     const taskList = document.getElementById('taskList');
 
     const taskRow = document.createElement('tr');
@@ -362,7 +369,12 @@ function clearReports() {
     }
 }
 
-document.getElementById('clearReportsButton').addEventListener('click', clearReports);
+export function initializeClearReportsButton() {
+    const clearReportsButton = document.getElementById('clearReportsButton');
+    if (clearReportsButton) {
+        clearReportsButton.addEventListener('click', clearReports);
+    }
+}
 
 // Função para atualizar uma tarefa no IndexedDB
 function updateTask(id, updatedTask) {
@@ -370,7 +382,7 @@ function updateTask(id, updatedTask) {
 }
 
 // Função para deletar uma tarefa no IndexedDB
-function deleteTask(id) {
+export function deleteTask(id) {
     const transaction = db.transaction(['tasks'], 'readwrite');
     const store = transaction.objectStore('tasks');
     store.delete(id);
@@ -467,10 +479,20 @@ window.addEventListener('load', function () {
 });
 
 // Adicionar nova tarefa ao enviar o formulário
-document.getElementById('taskForm').addEventListener('submit', addTask);
+export function initializeTaskForm() {
+    const taskForm = document.getElementById('taskForm');
+    if (taskForm) {
+        taskForm.addEventListener('submit', addTask)
+    }
+}
 
 // Adicionar novo projeto ao enviar o formulário
-document.getElementById('projectForm').addEventListener('submit', addProject);
+export function initializeProjectForm() {
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.addEventListener('submit', addProject)
+    }
+}
 
 // Carrega o arquivo de som
 const endSound = new Audio('../sons/notification5.mp3')
@@ -537,7 +559,7 @@ function startPausePomodoro() {
     }
 }
 
-function resetPomodoro() {
+export function resetPomodoro() {
     clearInterval(timer);
     isRunning = false;
     isWorkTime = true;
@@ -579,9 +601,26 @@ function showNotification(message) {
     }, 4000);  // Notificação dura 4 segundos
 }
 
-document.getElementById('start-pause-button').addEventListener('click', startPausePomodoro);
-document.getElementById('reset-button').addEventListener('click', resetPomodoro);
-document.getElementById('save-settings-button').addEventListener('click', saveSettings);
+export function initializeStartPauseButton() {
+    const startPauseButton  = document.getElementById('start-pause-button');
+    if (startPauseButton ) {
+        startPauseButton.addEventListener('click', startPausePomodoro)
+    }
+}
+
+export function initializeResetButton() {
+    const resetButton = document.getElementById('reset-button');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetPomodoro)
+    }
+}
+
+export function initializeSaveSettingsButton() {
+    const saveSettingsButton = document.getElementById('save-settings-button');
+    if (saveSettingsButton) {
+        saveSettingsButton.addEventListener('click', saveSettings)
+    }
+}
 
 // Função para requisitar o Wake Lock
 let wakeLock = null
@@ -612,15 +651,32 @@ function releaseWakeLock() {
 const fullscreenButton = document.getElementById('fullscreen-button');
 const pomodoroContainer = document.querySelector('.pomodoro-container');
 
-fullscreenButton.addEventListener('click', () => {
-    pomodoroContainer.classList.toggle('fullscreen');
-});
+if (fullscreenButton && pomodoroContainer) {
+    fullscreenButton.addEventListener('click', () => {
+        pomodoroContainer.classList.toggle('fullscreen')
+    })
+}
 
 // Theme dark
 // Referências aos elementos
 const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+}
 const themeIcon = document.getElementById('theme-icon');
 const themeText = document.getElementById('theme-text');
+
+export function initializeThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', themeToggle)
+    }
+}
+
+if (typeof window !== 'undefined') {
+    initializeThemeToggle();
+    window.addEventListener('load', loadTheme);
+}
 
 // Função para abrir o banco de dados IndexedDB
 function openDB() {
@@ -712,12 +768,6 @@ function loadTheme() {
     });
 }
 
-// Evento de clique para alternar o tema
-themeToggle.addEventListener('click', toggleTheme);
-
-// Carregar o tema ao iniciar a página
-window.addEventListener('load', loadTheme);
-
 // Funçao para salvar o conteudo do editor de texto
 function saveEditorText() {
     const editorText = document.getElementById('editor').innerHTML;
@@ -744,3 +794,15 @@ window.addEventListener('load', () => {
    loadEditorText();
    editorAutoSave();
 });
+
+// Inicializa os componentes apenas no ambiente do navegador
+if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
+    initializeMenuItems();
+    initializeIndexedDB();
+    initializeClearReportsButton();
+    initializeProjectForm();
+    initializeTaskForm();
+    initializeStartPauseButton();
+    initializeSaveSettingsButton();
+    initializeResetButton();
+}

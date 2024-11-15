@@ -1,19 +1,9 @@
 {
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.25.9",
-        "@babel/preset-env": "^7.26.0",
-        "@eslint/js": "^9.13.0",
         "electron": "^33.0.1",
         "electron-builder": "^25.1.8",
         "electron-packager": "^17.1.2",
-        "eslint": "^9.13.0",
-        "fake-indexeddb": "^6.0.0",
-        "globals": "^15.11.0",
-        "jest": "^29.7.0",
-        "jest-environment-jsdom": "^29.7.0"
-    },
-    "jest": {
-        "testEnvironment": "jest-environment-jsdom"
+        "fake-indexeddb": "^6.0.0"
     },
     "name": "to-do-list",
     "version": "1.0.1",
@@ -22,7 +12,6 @@
     "scripts": {
         "start": "electron .",
         "dist": "electron-builder",
-        "test": "jest"
     },
     "build": {
         "appId": "com.todo.list",
@@ -43,7 +32,6 @@
         "anymatch": "^3.1.3",
         "argparse": "^1.0.10",
         "asynckit": "^0.4.0",
-        "babel-jest": "^29.7.0",
         "babel-plugin-istanbul": "^6.1.1",
         "babel-plugin-jest-hoist": "^29.6.3",
         "babel-preset-current-node-syntax": "^1.1.0",
