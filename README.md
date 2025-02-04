@@ -62,15 +62,28 @@ Aumente sua produtividade com o timer Pomodoro integrado:
 
 ![Lista de Tarefas](./Imagens/pomodoro.png)
 
-## 🛠 Tecnologias
+## 🛠️ Tecnologias Utilizadas
 
-O projeto foi desenvolvido utilizando tecnologias modernas e robustas:
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- IndexedDB
+- Font Awesome
 
-- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) Estruturação semântica
-- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) Estilização moderna
-- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) ES6+
-- ![IndexedDB](https://img.shields.io/badge/IndexedDB-2C2D72?style=flat&logo=sqlite&logoColor=white) Armazenamento local
-- ![Font Awesome](https://img.shields.io/badge/Font_Awesome-339AF0?style=flat&logo=fontawesome&logoColor=white) Iconografia
+## 🚀 Demo
+
+[Link para a aplicação em produção - se disponível]
+
+## 📋 Funcionalidades
+
+- ✅ Gerenciamento completo de tarefas
+- 📁 Sistema de categorização
+- 👥 Gestão de responsáveis
+- 📊 Relatórios detalhados
+- ⏲️ Timer Pomodoro integrado
+- 🌙 Modo escuro/claro
+- 💾 Armazenamento local com IndexedDB
+- 📱 Design responsivo
 
 ## 🚦 Começando
 
@@ -82,20 +95,21 @@ O projeto foi desenvolvido utilizando tecnologias modernas e robustas:
 
 1. Clone o repositório
 ```bash
-git clone https://github.com/SeuUsuario/ToDoListApp.git
+git clone https://github.com/SEU_USUARIO/todo-list-app.git
 ```
 
-2. Acesse o diretório
+2. Navegue até o diretório
 ```bash
-cd ToDoListApp
+cd todo-list-app
 ```
 
-3. Inicie um servidor local (opcional)
+3. Abra o arquivo index.html no navegador ou use um servidor local
 ```bash
-# Usando Node.js
+# Se tiver Python instalado
+python -m http.server 8000
+
+# Se tiver Node.js instalado
 npx http-server
-
-# Ou simplesmente abra o index.html no navegador
 ```
 
 ## 🏗 Arquitetura
@@ -121,34 +135,42 @@ ToDoListApp/
 - **Gerenciador de Estados**: Controle centralizado de estados da aplicação
 - **Sistema de Temas**: Alternância dinâmica entre temas claro/escuro
 
+## 💡 Como Usar
+
+1. **Tarefas**
+   - Adicione tarefas com nome, categoria, tipo e responsável
+   - Gerencie status e acompanhe o progresso
+
+2. **Categorias**
+   - Organize suas tarefas em categorias personalizadas
+   - Gerencie e exclua categorias conforme necessário
+
+3. **Responsáveis**
+   - Cadastre e gerencie responsáveis pelas tarefas
+   - Atribua tarefas a responsáveis específicos
+
+4. **Pomodoro**
+   - Use o timer para gerenciar seu tempo
+   - Personalize intervalos de trabalho e pausa
+
 ## 👥 Contribuição
 
-Contribuições são sempre bem-vindas! Para contribuir:
-
-1. Fork o projeto
-2. Crie uma branch para sua feature
-```bash
-git checkout -b feature/AmazingFeature
-```
-3. Commit suas mudanças
-```bash
-git commit -m 'Add: Amazing Feature'
-```
-4. Push para a branch
-```bash
-git push origin feature/AmazingFeature
-```
-5. Abra um Pull Request
-
-### Diretrizes de Contribuição
-- Siga o padrão de código existente
-- Atualize a documentação conforme necessário
-- Adicione testes para novas funcionalidades
-- Mantenha os commits organizados e descritivos
+1. Faça um Fork do projeto
+2. Crie uma Branch para sua Feature (`git checkout -b feature/AmazingFeature`)
+3. Adicione suas mudanças (`git add .`)
+4. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+5. Push a Branch (`git push origin feature/AmazingFeature`)
+6. Abra um Pull Request
 
 ## 📄 Licença
 
-Ainda não possui liceça.
+* Ainda não possui licença ativa.
+
+## 👤 Autor
+
+Igor da Silva
+- GitHub: [@seuusuario](https://github.com/igorrsilvaaf/)
+- LinkedIn: [Seu LinkedIn](https://www.linkedin.com/in/igor-da-silva-francisco-b248bb289/)
 
 ---
 

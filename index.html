@@ -34,6 +34,9 @@
                         <li id="menu-notebook"><i class="fa-solid fa-book"></i> Caderno</li>
                     </ul>
                 </li>
+                <li id="menu-responsaveis">
+                    <i class="fa-solid fa-users"></i> Responsáveis
+                </li>
                 <li id="menu-reports">
                     <i class="fa-solid fa-chart-line"></i> Relatório
                 </li>
@@ -74,7 +77,9 @@
                     </select>
                 </div>
 
-                <input type="text" id="taskResponsible" placeholder="Responsável">
+                <select id="taskResponsible" required>
+                    <option value="" disabled selected>Selecione um responsável</option>
+                </select>
 
                 <textarea id="taskObservation" placeholder="Observação" rows="10"></textarea>
 
@@ -123,8 +128,8 @@
                         <th>Excluir</th>
                     </tr>
                 </thead>
-                <tbody id="projectList">
-                    <!-- Os projetos serão exibidos aqui -->
+                <tbody id="projectsTable">
+                    <!-- As categorias serão exibidas aqui -->
                 </tbody>
             </table>
         </section>
@@ -221,6 +226,34 @@
                     <!-- Histórico de Pomodoros -->
                 </ul>
             </div>
+        </section>
+
+        <!-- Seção Responsáveis -->
+        <section id="responsaveis-section" class="section hidden">
+            <header>
+                <h1>Responsáveis 👥</h1>
+            </header>
+
+            <form id="responsavelForm" class="project-form">
+                <input type="text" id="responsavelName" placeholder="Nome do responsável" required>
+                <input type="email" id="responsavelEmail" placeholder="E-mail do responsável">
+                <input type="tel" id="responsavelTelefone" placeholder="Telefone do responsável">
+                <button type="submit">Adicionar responsável</button>
+            </form>
+
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>Excluir</th>
+                    </tr>
+                </thead>
+                <tbody id="responsaveisTable">
+                    <!-- Os responsáveis serão exibidos aqui -->
+                </tbody>
+            </table>
         </section>
     </div>
 
