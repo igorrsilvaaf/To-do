@@ -1233,3 +1233,75 @@ body.light-mode #responsavelForm button:hover {
         padding: 8px 10px;
     }
 }
+
+.btn-edit {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-edit:hover {
+    transform: scale(1.2);
+}
+
+/* Ajuste para a coluna de ações */
+.task-table td:last-child {
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+/* Estilos para as colunas de ação */
+.action-column {
+    text-align: center;
+    width: 50px;
+}
+
+/* Estilos para os botões de ação */
+.btn-complete,
+.btn-edit,
+.btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+    transition: transform 0.2s;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.btn-complete:hover,
+.btn-edit:hover,
+.btn-delete:hover {
+    transform: scale(1.2);
+}
+
+/* Cores específicas para cada botão no hover */
+.btn-complete:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.btn-edit:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.btn-delete:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Ajuste para o tema escuro */
+body.dark-mode .btn-complete:hover {
+    background-color: rgba(80, 250, 123, 0.1);
+}
+
+body.dark-mode .btn-edit:hover {
+    background-color: rgba(139, 233, 253, 0.1);
+}
+
+body.dark-mode .btn-delete:hover {
+    background-color: rgba(255, 85, 85, 0.1);
+}
