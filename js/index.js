@@ -56,6 +56,7 @@ export function initializeMenuItems() {
     const menuItems = [
         { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
         { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
+        { id: 'menu-responsaveis', section: 'responsaveis-section', title: 'Responsáveis 👥' },
         { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
         { id: 'menu-reports', section: 'reports-section', title: 'Relatórios 📊' },
         { id: 'menu-pomodoro', section: 'pomodoro-section', title: 'Pomodoro ⏳' }
@@ -96,7 +97,7 @@ window.addEventListener('load', function () {
 let db;
 
 export function initializeIndexedDB() {
-    const request = indexedDB.open('TaskManagerDB', 2);
+    const request = indexedDB.open('TaskManagerDB', 4);
 
     request.onupgradeneeded = function (event) {
         db = event.target.result;
@@ -104,12 +105,17 @@ export function initializeIndexedDB() {
         if (!db.objectStoreNames.contains('tasks')) {
             db.createObjectStore('tasks', { keyPath: 'id' });
         }
+        
         if (!db.objectStoreNames.contains('projects')) {
             db.createObjectStore('projects', { keyPath: 'id' });
         }
+        
+        if (!db.objectStoreNames.contains('responsaveis')) {
+            db.createObjectStore('responsaveis', { keyPath: 'id' });
+        }
+        
         if (!db.objectStoreNames.contains('settings')) {
             db.createObjectStore('settings', { keyPath: 'key' });
-            console.log('Store settings criada ...');
         }
     };
 
@@ -118,6 +124,7 @@ export function initializeIndexedDB() {
         loadActiveSection();
         loadTasks();
         loadProjects();
+        loadResponsaveis();
     };
 
     request.onerror = function (event) {
@@ -128,6 +135,7 @@ export function initializeIndexedDB() {
 
 let taskLoaded = false;
 let projectsLoaded = false;
+let responsaveisLoaded = false;
 
 function loadTasks() {
     if (taskLoaded) return;
@@ -151,8 +159,8 @@ function loadProjects() {
     if (projectsLoaded) return;
     projectsLoaded = true;
 
-    const projectList = document.getElementById('projectList');
-    projectList.innerHTML = ''; // Limpa a lista de projetos para evitar duplicação
+    const projectList = document.getElementById('projectsTable');
+    projectList.innerHTML = '';
 
     const transaction = db.transaction(['projects'], 'readonly');
     const store = transaction.objectStore('projects');
@@ -161,7 +169,7 @@ function loadProjects() {
     request.onsuccess = function () {
         const projects = request.result;
         projects.forEach(project => renderProject(project));
-        loadProjectsInSelect(); // Atualiza a seleção de projetos no formulário de tarefas
+        loadProjectsInSelect();
     };
 }
 
@@ -204,7 +212,7 @@ export function addTask(event) {
     const taskDueDate = new Date(document.getElementById('taskDueDate').value).toLocaleString('pt-BR', {
         day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
     }).replace(',', ` -- `);
-    const taskResponsible = document.getElementById('taskResponsible').value.trim();
+    const taskResponsible = document.getElementById('taskResponsible').value;
     const taskProject = document.getElementById('taskProject').value;
     const taskObservation = document.getElementById('taskObservation').value.trim();
 
@@ -218,79 +226,6 @@ export function addTask(event) {
         document.getElementById('taskForm').reset();
     } catch (error) {
         alert(error.message);
-    }
-}
-
-// Função para renderizar a tarefa na tabela
-export function renderTask(task) {
-    const taskList = document.getElementById('taskList');
-
-    const taskRow = document.createElement('tr');
-    taskRow.setAttribute('data-id', task.id);
-
-    taskRow.innerHTML = `
-        <td>${task.text}</td>
-        <td>
-            <select class="status-select">
-                <option value="Pendente" ${task.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
-                <option value="Em andamento" ${task.status === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
-                <option value="Cancelada" ${task.status === 'Cancelada' ? 'selected' : ''}>Cancelada</option>
-                <option value="Concluída" ${task.status === 'Concluída' ? 'selected' : ''}>Concluída</option>
-            </select>
-        </td>
-        <td>${task.type}</td>
-        <td>${task.project}</td>
-        <td>${task.dueDate}</td>
-        <td>${task.responsible}</td>
-        <td class="observation-cell">${task.observation}</td>
-        <td><input type="checkbox" class="btn-complete" ${task.status === 'Concluída' ? 'checked' : ''}></td>
-        <td><button class="btn-delete">🗑️</button></td>
-    `;
-
-    taskList.appendChild(taskRow);
-
-    taskRow.querySelector('.status-select').addEventListener('change', function () {
-        const newStatus = this.value;
-        task.status = newStatus;
-        updateTask(task.id, task);
-        saveReport('Status atualizado para ' + newStatus, task);
-        renderTaskColor(this, newStatus);
-    });
-
-    taskRow.querySelector('.btn-complete').addEventListener('change', function () {
-        if (this.checked) {
-            task.status = 'Concluída';
-            saveReport('Concluída e removida da lista', task);
-            taskList.removeChild(taskRow);
-            deleteTask(task.id);
-        }
-    });
-
-    taskRow.querySelector('.btn-delete').addEventListener('click', function () {
-        taskList.removeChild(taskRow);
-        saveReport('Deletada', task);
-        deleteTask(task.id);
-    });
-
-    renderTaskColor(taskRow.querySelector('.status-select'), task.status);
-}
-
-// Função para definir a cor do status
-function renderTaskColor(element, status) {
-    element.classList.remove('status-pendente', 'status-em-andamento', 'status-cancelada', 'status-concluida');
-    switch (status) {
-        case 'Pendente':
-            element.classList.add('status-pendente');
-            break;
-        case 'Em andamento':
-            element.classList.add('status-em-andamento');
-            break;
-        case 'Cancelada':
-            element.classList.add('status-cancelada');
-            break;
-        case 'Concluída':
-            element.classList.add('status-concluida');
-            break;
     }
 }
 
@@ -446,7 +381,7 @@ function addProject(event) {
 
 // Função para renderizar um projeto na tabela
 function renderProject(project) {
-    const projectList = document.getElementById('projectList');
+    const projectList = document.getElementById('projectsTable');
 
     const projectRow = document.createElement('tr');
     projectRow.setAttribute('data-id', project.id);
@@ -462,6 +397,7 @@ function renderProject(project) {
     projectRow.querySelector('.btn-delete-project').addEventListener('click', function () {
         projectList.removeChild(projectRow);
         deleteProject(project.id);
+        loadProjectsInSelect();
     });
 }
 
@@ -795,6 +731,107 @@ window.addEventListener('load', () => {
    editorAutoSave();
 });
 
+// Funções para gerenciar responsáveis
+function loadResponsaveis() {
+    if (responsaveisLoaded) return;
+    responsaveisLoaded = true;
+
+    const responsaveisTable = document.getElementById('responsaveisTable');
+    responsaveisTable.innerHTML = '';
+
+    const transaction = db.transaction(['responsaveis'], 'readonly');
+    const store = transaction.objectStore('responsaveis');
+    const request = store.getAll();
+
+    request.onsuccess = function () {
+        const responsaveis = request.result;
+        responsaveis.forEach(responsavel => renderResponsavel(responsavel));
+        loadResponsaveisInSelect();
+    };
+}
+
+function saveResponsavel(responsavel) {
+    const transaction = db.transaction(['responsaveis'], 'readwrite');
+    const store = transaction.objectStore('responsaveis');
+    store.put(responsavel);
+}
+
+function addResponsavel(event) {
+    event.preventDefault();
+    const responsavelName = document.getElementById('responsavelName').value.trim();
+    const responsavelEmail = document.getElementById('responsavelEmail').value.trim();
+    const responsavelTelefone = document.getElementById('responsavelTelefone').value.trim();
+
+    if (responsavelName) {
+        const responsavel = {
+            id: Date.now(),
+            name: responsavelName,
+            email: responsavelEmail,
+            telefone: responsavelTelefone
+        };
+
+        renderResponsavel(responsavel);
+        saveResponsavel(responsavel);
+        document.getElementById('responsavelForm').reset();
+        loadResponsaveisInSelect();
+    }
+}
+
+function renderResponsavel(responsavel) {
+    const responsaveisTable = document.getElementById('responsaveisTable');
+    
+    const responsavelRow = document.createElement('tr');
+    responsavelRow.setAttribute('data-id', responsavel.id);
+
+    responsavelRow.innerHTML = `
+        <td>${responsavel.name}</td>
+        <td>${responsavel.email}</td>
+        <td>${responsavel.telefone}</td>
+        <td><button class="btn-delete">🗑️</button></td>
+    `;
+
+    responsaveisTable.appendChild(responsavelRow);
+
+    responsavelRow.querySelector('.btn-delete').addEventListener('click', function() {
+        responsaveisTable.removeChild(responsavelRow);
+        deleteResponsavel(responsavel.id);
+        loadResponsaveisInSelect();
+    });
+}
+
+function deleteResponsavel(id) {
+    const transaction = db.transaction(['responsaveis'], 'readwrite');
+    const store = transaction.objectStore('responsaveis');
+    store.delete(id);
+}
+
+function loadResponsaveisInSelect() {
+    const responsavelSelect = document.getElementById('taskResponsible');
+    responsavelSelect.innerHTML = '<option value="" disabled selected>Selecione um responsável</option>';
+
+    const transaction = db.transaction(['responsaveis'], 'readonly');
+    const store = transaction.objectStore('responsaveis');
+    const request = store.getAll();
+
+    request.onsuccess = function () {
+        const responsaveis = request.result;
+        responsaveis.forEach(responsavel => {
+            const option = document.createElement('option');
+            option.value = responsavel.name;
+            option.textContent = responsavel.name;
+            responsavelSelect.appendChild(option);
+        });
+    };
+}
+
+// Inicializar o formulário de responsáveis
+export function initializeResponsavelForm() {
+    const responsavelForm = document.getElementById('responsavelForm');
+    if (responsavelForm) {
+        responsavelForm.addEventListener('submit', addResponsavel);
+    }
+}
+
 // Inicializa os componentes apenas no ambiente do navegador
 if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
     initializeMenuItems();
@@ -802,6 +839,7 @@ if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
     initializeClearReportsButton();
     initializeProjectForm();
     initializeTaskForm();
+    initializeResponsavelForm();
     initializeStartPauseButton();
     initializeSaveSettingsButton();
     initializeResetButton();
