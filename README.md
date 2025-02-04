@@ -1,149 +1,157 @@
----
+# 📝 To-Do List App
 
-## Sumário
-1. [Introdução](#introdução)
-2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
-3. [Instalação](#instalação)
-4. [Funcionalidades](#funcionalidades)
-5. [Estrutura do Projeto](#estrutura-do-projeto)
-6. [Como Contribuir](#como-contribuir)
-7. [Licença](#licença)
+Uma aplicação moderna e intuitiva para gerenciamento de tarefas, combinando produtividade com a técnica Pomodoro.
 
----
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Introdução
+## 📋 Sumário
+- [Visão Geral](#-visão-geral)
+- [Recursos](#-recursos)
+- [Tecnologias](#-tecnologias)
+- [Começando](#-começando)
+- [Arquitetura](#-arquitetura)
+- [Contribuição](#-contribuição)
+- [Licença](#-licença)
 
-Este projeto é uma aplicação **To-Do List**, que permite ao usuário organizar tarefas, categorias, e utilizar a técnica **Pomodoro** para aumentar a produtividade. Ele também inclui funcionalidades de **relatórios** e **modo escuro/claro**.
+## 🎯 Visão Geral
 
-O projeto utiliza uma interface moderna e responsiva com recursos de interação fáceis de usar, como um painel lateral, formulários dinâmicos e integração com IndexedDB para armazenamento local das tarefas.
+O To-Do List App é uma solução completa para gerenciamento de tarefas e produtividade, combinando uma interface moderna e intuitiva com recursos avançados como timer Pomodoro, categorização de tarefas e geração de relatórios. A aplicação foi projetada pensando em usuários que buscam organizar suas atividades de forma eficiente, mantendo o foco e a produtividade.
 
----
+### ✨ Principais Diferenciais
+- Interface responsiva e intuitiva
+- Armazenamento local seguro com IndexedDB
+- Suporte a temas claro/escuro
+- Sistema completo de categorização
+- Timer Pomodoro integrado
+- Geração de relatórios detalhados
 
-## Tecnologias Utilizadas
+## 🚀 Recursos
 
-Este projeto foi desenvolvido utilizando as seguintes tecnologias:
+### Gerenciamento de Tarefas
+Organize suas atividades com um sistema robusto de gerenciamento de tarefas:
+- Criação de tarefas com campos personalizáveis
+- Atribuição de responsáveis
+- Datas de entrega
+- Sistema de status
+- Observações detalhadas
 
-- **HTML5**: Estrutura da página.
-- **CSS3**: Estilização e design responsivo.
-- **JavaScript (ES6)**: Interatividade e lógica da aplicação.
-- **IndexedDB**: Armazenamento local para as tarefas e categorias.
-- **FontAwesome**: Ícones para melhorar a UI.
-- **Pomodoro Timer**: Técnica de gerenciamento de tempo embutida.
+![Lista de Tarefas](./Imagens/listaDeTarefas.png)
 
----
+### Sistema de Categorias
+Categorize suas tarefas de forma eficiente:
+- Categorias personalizáveis
+- Organização hierárquica
+- Filtros avançados
 
-## Instalação
+![Lista de Tarefas](./Imagens/categorias.png)
 
-### Requisitos
+### Relatórios Analíticos
+Acompanhe seu progresso com relatórios detalhados:
+- Histórico de ações
+- Métricas de produtividade
+- Exportação de dados
 
-Para rodar este projeto localmente, você precisará de um ambiente que sirva arquivos estáticos, como o **Node.js** com o pacote `http-server` ou apenas abrir o `index.html` diretamente no navegador.
+![Lista de Tarefas](./Imagens/relatorio.png)
 
-### Passos para rodar o projeto
+### Timer Pomodoro
+Aumente sua produtividade com o timer Pomodoro integrado:
+- Intervalos personalizáveis
+- Notificações sonoras
+- Histórico de sessões
+- Estatísticas de uso
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/SeuUsuario/ToDoListApp.git
-   ```
+![Lista de Tarefas](./Imagens/pomodoro.png)
 
-2. Navegue até o diretório do projeto:
-   ```bash
-   cd ToDoListApp
-   ```
+## 🛠 Tecnologias
 
-3. Se preferir, você pode instalar um servidor estático localmente com Node.js:
-   ```bash
-   npm install -g http-server
-   ```
+O projeto foi desenvolvido utilizando tecnologias modernas e robustas:
 
-4. Inicie o servidor:
-   ```bash
-   http-server
-   ```
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) Estruturação semântica
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) Estilização moderna
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) ES6+
+- ![IndexedDB](https://img.shields.io/badge/IndexedDB-2C2D72?style=flat&logo=sqlite&logoColor=white) Armazenamento local
+- ![Font Awesome](https://img.shields.io/badge/Font_Awesome-339AF0?style=flat&logo=fontawesome&logoColor=white) Iconografia
 
-5. Abra o navegador no endereço:
-   ```bash
-   http://localhost:8080
-   ```
+## 🚦 Começando
 
----
+### Pré-requisitos
+- Navegador moderno com suporte a ES6+
+- Node.js (opcional, para servidor local)
 
-## Funcionalidades
+### Instalação
 
-A aplicação oferece as seguintes funcionalidades principais:
-
-### 1. **Lista de Tarefas**
-   - Adicione novas tarefas com nome, categoria, tipo, data de entrega, responsável e observação.
-   - Marque tarefas como concluídas, exclua ou altere o status.
-   - Abaixo está uma captura de tela da interface da lista de tarefas:
-   - ![Lista de Tarefas](./Imagens/listaDeTarefas.png)
-
-### 2. **Categorias**
-   - Adicione e organize suas tarefas em categorias personalizadas.
-   - Abaixo está uma captura de tela da interface de categorias:
-   - ![Lista de Tarefas](./Imagens/categorias.png)
-
-### 3. **Relatórios**
-   - Gere relatórios automáticos das ações realizadas nas tarefas (adicionar, atualizar status e deletar).
-   - Abaixo está uma captura de tela da interface de relatórios:
-   - ![Lista de Tarefas](./Imagens/relatorio.png)
-
-### 4. **Pomodoro**
-   - Utilize a técnica Pomodoro para gerenciar seu tempo de forma eficiente.
-   - Personalize os tempos de trabalho e pausa, com histórico de sessões.
-   - Abaixo está uma captura de tela da interface do pomodoro:
-   - ![Lista de Tarefas](./Imagens/pomodoro.png)
-
-### 5. **Modo Escuro/Claro**
-   - Altere o tema da aplicação para modo claro ou escuro.
-
----
-
-## Estrutura do Projeto
-
-A estrutura básica do projeto está organizada da seguinte forma:
-
-```
-/index.html          -> Estrutura da página HTML.
-/js/index.js         -> Lógica principal da aplicação (tarefas, categorias, relatórios, Pomodoro).
-/style/Style.css     -> Estilos CSS para a interface.
-/Imagens/            -> Recursos de imagem, como logo e ícones.
+1. Clone o repositório
+```bash
+git clone https://github.com/SeuUsuario/ToDoListApp.git
 ```
 
-### index.html
+2. Acesse o diretório
+```bash
+cd ToDoListApp
+```
 
-O arquivo **index.html** contém a estrutura principal da aplicação, incluindo:
-- O painel lateral com navegação entre as seções (Tarefas, Categorias, Caderno, Relatórios e Pomodoro).
-- Formulários para criar tarefas e categorias.
-- Tabelas para exibir as tarefas e categorias.
-  
-### index.js
+3. Inicie um servidor local (opcional)
+```bash
+# Usando Node.js
+npx http-server
 
-O arquivo **index.js** lida com toda a lógica da aplicação, incluindo:
-- Manipulação do DOM para adicionar, atualizar e remover tarefas e categorias.
-- Armazenamento das tarefas e categorias no **IndexedDB**.
-- Implementação da técnica **Pomodoro** com temporizador.
-- Alternância de tema entre modo claro e escuro.
-- Funções de relatório que salvam as ações realizadas no **LocalStorage**.
+# Ou simplesmente abra o index.html no navegador
+```
+
+## 🏗 Arquitetura
+
+```
+ToDoListApp/
+├── 📄 index.html          # Entrada da aplicação
+├── 📂 js/
+│   └── 📜 index.js       # Lógica principal
+├── 📂 style/
+│   └── 📜 Style.css      # Estilos globais
+└── 📂 Imagens/           # Recursos estáticos
+    ├── 🖼️ listaDeTarefas.png
+    ├── 🖼️ categorias.png
+    ├── 🖼️ relatorio.png
+    └── 🖼️ pomodoro.png
+```
+
+### Componentes Principais
+
+- **Interface Principal**: Implementada em HTML5 com design responsivo
+- **Sistema de Armazenamento**: Utiliza IndexedDB para persistência local
+- **Gerenciador de Estados**: Controle centralizado de estados da aplicação
+- **Sistema de Temas**: Alternância dinâmica entre temas claro/escuro
+
+## 👥 Contribuição
+
+Contribuições são sempre bem-vindas! Para contribuir:
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+```bash
+git checkout -b feature/AmazingFeature
+```
+3. Commit suas mudanças
+```bash
+git commit -m 'Add: Amazing Feature'
+```
+4. Push para a branch
+```bash
+git push origin feature/AmazingFeature
+```
+5. Abra um Pull Request
+
+### Diretrizes de Contribuição
+- Siga o padrão de código existente
+- Atualize a documentação conforme necessário
+- Adicione testes para novas funcionalidades
+- Mantenha os commits organizados e descritivos
+
+## 📄 Licença
+
+Ainda não possui liceça.
 
 ---
 
-## Como Contribuir
-
-Se você quiser contribuir com este projeto, siga as etapas abaixo:
-
-1. Faça um fork do repositório.
-2. Crie uma nova branch:
-   ```bash
-   git checkout -b feature/nova-feature
-   ```
-3. Faça suas alterações e adicione commits:
-   ```bash
-   git commit -m 'Adicionar nova feature'
-   ```
-4. Envie suas alterações para o GitHub:
-   ```bash
-   git push origin feature/nova-feature
-   ```
-5. Abra um Pull Request.
-
----
+<p align="center">
+  Desenvolvido com ❤️ por Igor Silva
+</p>
