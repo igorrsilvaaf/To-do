@@ -177,13 +177,7 @@ function loadProjects() {
 function saveTask(task) {
     const transaction = db.transaction(['tasks'], 'readwrite');
     const store = transaction.objectStore('tasks');
-    
-    const request = store.get(task.id);
-    request.onsuccess = (() => {
-        if (!request.result) {
-            store.put(task)
-        }
-    });
+    store.put(task);
 }
 
 // Função que cria um objeto de tarefa
@@ -204,9 +198,12 @@ export function createTask(taskText, taskType, taskDueDate, taskResponsible, tas
     };
 }
 
-// Função para adicionar uma nova tarefa
+// Função para adicionar/atualizar uma tarefa
 export function addTask(event) {
     event.preventDefault();
+    const form = event.target;
+    const editingId = form.getAttribute('data-editing');
+
     const taskText = document.getElementById('taskName').value.trim();
     const taskType = document.getElementById('taskType').value.trim();
     const taskDueDate = new Date(document.getElementById('taskDueDate').value).toLocaleString('pt-BR', {
@@ -217,13 +214,49 @@ export function addTask(event) {
     const taskObservation = document.getElementById('taskObservation').value.trim();
 
     try {
-        const task = createTask(taskText, taskType, taskDueDate, taskResponsible, taskProject, taskObservation);
+        const task = {
+            id: editingId ? parseInt(editingId) : Date.now(),
+            text: taskText,
+            type: taskType,
+            dueDate: taskDueDate,
+            responsible: taskResponsible,
+            project: taskProject,
+            observation: taskObservation,
+            status: editingId ? document.querySelector(`tr[data-id="${editingId}"]`).children[1].textContent : 'Pendente'
+        };
 
-        renderTask(task);
-        saveTask(task);
-        saveReport('Adicionada', task);
+        // Salvar no IndexedDB
+        const transaction = db.transaction(['tasks'], 'readwrite');
+        const store = transaction.objectStore('tasks');
+        
+        const request = store.put(task);
+        
+        request.onsuccess = function() {
+            // Remover linha antiga se estiver editando
+            if (editingId) {
+                const oldRow = document.querySelector(`tr[data-id="${editingId}"]`);
+                if (oldRow) {
+                    oldRow.remove();
+                }
+            }
 
-        document.getElementById('taskForm').reset();
+            // Renderizar nova linha
+            renderTask(task);
+            
+            // Salvar no relatório
+            saveReport(editingId ? 'Editada' : 'Adicionada', task);
+
+            // Resetar formulário
+            form.reset();
+            form.removeAttribute('data-editing');
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Adicionar Tarefa';
+        };
+
+        request.onerror = function() {
+            alert('Erro ao salvar a tarefa');
+        };
+
     } catch (error) {
         alert(error.message);
     }
@@ -311,16 +344,26 @@ export function initializeClearReportsButton() {
     }
 }
 
-// Função para atualizar uma tarefa no IndexedDB
-function updateTask(id, updatedTask) {
-    saveTask(updatedTask);
-}
+// Função para deletar uma tarefa
+function deleteTask(id, taskRow) {
+    const confirmDelete = confirm("Tem certeza que deseja excluir esta tarefa?");
+    if (confirmDelete) {
+        // Remover do DOM
+        taskRow.remove();
+        
+        // Remover do IndexedDB
+        const transaction = db.transaction(['tasks'], 'readwrite');
+        const store = transaction.objectStore('tasks');
+        store.delete(id);
 
-// Função para deletar uma tarefa no IndexedDB
-export function deleteTask(id) {
-    const transaction = db.transaction(['tasks'], 'readwrite');
-    const store = transaction.objectStore('tasks');
-    store.delete(id);
+        // Salvar no relatório
+        const task = {
+            text: taskRow.cells[0].textContent,
+            responsible: taskRow.cells[5].textContent,
+            status: taskRow.cells[1].textContent
+        };
+        saveReport('Excluída', task);
+    }
 }
 
 // Função para carregar os projetos no campo de seleção
@@ -843,4 +886,97 @@ if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
     initializeStartPauseButton();
     initializeSaveSettingsButton();
     initializeResetButton();
+}
+
+function renderTask(task) {
+    const taskList = document.getElementById('taskList');
+    
+    // Remover linha existente se estiver editando
+    const existingRow = document.querySelector(`tr[data-id="${task.id}"]`);
+    if (existingRow) {
+        existingRow.remove();
+    }
+    
+    const taskRow = document.createElement('tr');
+    taskRow.setAttribute('data-id', task.id);
+
+    taskRow.innerHTML = `
+        <td>${task.text}</td>
+        <td>${task.status}</td>
+        <td>${task.type}</td>
+        <td>${task.project}</td>
+        <td>${task.dueDate}</td>
+        <td>${task.responsible}</td>
+        <td>${task.observation}</td>
+        <td class="action-column">
+            <button class="btn-complete" title="Marcar como concluída">✅</button>
+        </td>
+        <td class="action-column">
+            <button class="btn-edit" title="Editar tarefa">✏️</button>
+        </td>
+        <td class="action-column">
+            <button class="btn-delete" title="Excluir tarefa">🗑️</button>
+        </td>
+    `;
+
+    taskList.appendChild(taskRow);
+
+    // Adicionar evento para edição
+    taskRow.querySelector('.btn-edit').addEventListener('click', function() {
+        editTask(task);
+    });
+
+    // Eventos existentes
+    taskRow.querySelector('.btn-complete').addEventListener('click', function() {
+        completeTask(task.id, taskRow);
+    });
+
+    taskRow.querySelector('.btn-delete').addEventListener('click', function() {
+        deleteTask(task.id, taskRow);
+    });
+}
+
+// Função para editar tarefa
+function editTask(task) {
+    const form = document.getElementById('taskForm');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    // Preencher o formulário com os dados da tarefa
+    document.getElementById('taskName').value = task.text;
+    document.getElementById('taskType').value = task.type;
+    document.getElementById('taskProject').value = task.project;
+    document.getElementById('taskResponsible').value = task.responsible;
+    document.getElementById('taskObservation').value = task.observation;
+    
+    // Converter a data para o formato aceito pelo input datetime-local
+    const [date, time] = task.dueDate.split(' -- ');
+    const [day, month, year] = date.split('/');
+    const [hour, minute] = time.trim().split(':');
+    const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
+    document.getElementById('taskDueDate').value = formattedDate;
+
+    // Garantir que os selects estejam com as opções corretas
+    const projectSelect = document.getElementById('taskProject');
+    const responsibleSelect = document.getElementById('taskResponsible');
+
+    // Garantir que a categoria existe no select
+    if (!Array.from(projectSelect.options).some(option => option.value === task.project)) {
+        const option = new Option(task.project, task.project);
+        projectSelect.add(option);
+    }
+    projectSelect.value = task.project;
+
+    // Garantir que o responsável existe no select
+    if (!Array.from(responsibleSelect.options).some(option => option.value === task.responsible)) {
+        const option = new Option(task.responsible, task.responsible);
+        responsibleSelect.add(option);
+    }
+    responsibleSelect.value = task.responsible;
+
+    // Modificar o botão de submit e adicionar ID da tarefa sendo editada
+    submitButton.textContent = 'Atualizar Tarefa';
+    form.setAttribute('data-editing', task.id);
+
+    // Rolar até o formulário
+    form.scrollIntoView({ behavior: 'smooth' });
 }
