@@ -18,7 +18,11 @@
     "scripts": {
         "start": "electron .",
         "dist": "electron-builder",
-        "test": "jest"
+        "test": "jest --coverage",
+        "test:watch": "jest --watch",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "ci": "npm run lint && npm test"
     },
     "build": {
         "appId": "com.todo.list",
