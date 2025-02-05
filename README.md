@@ -76,14 +76,56 @@ Aumente sua produtividade com o timer Pomodoro integrado:
 
 ## 📋 Funcionalidades
 
-- ✅ Gerenciamento completo de tarefas
-- 📁 Sistema de categorização
-- 👥 Gestão de responsáveis
-- 📊 Relatórios detalhados
-- ⏲️ Timer Pomodoro integrado
-- 🌙 Modo escuro/claro
-- 💾 Armazenamento local com IndexedDB
+### Lista de Tarefas
+- ✅ Gerenciamento completo de tarefas (criar, editar, excluir)
+- 🔄 Status dinâmicos com indicadores visuais:
+  - 🔵 Pendente (Azul)
+  - 🟣 Em andamento (Roxo)
+  - 🟢 Concluída (Verde)
+  - 🔴 Bloqueada (Vermelho)
+- 📅 Data e hora de entrega
+- 📝 Campo para observações
+- 🏷️ Tipo de tarefa personalizável
+
+### Sistema de Categorias
+Categorize suas tarefas de forma eficiente:
+- Categorias personalizáveis
+- Organização hierárquica
+- Filtros avançados
+
+### Gestão de Responsáveis
+Sistema completo para gerenciamento de responsáveis:
+- Cadastro com nome, e-mail e telefone
+- Atribuição de responsáveis às tarefas
+- Interface responsiva
+- Exclusão simplificada
+
+### Relatórios
+Acompanhe todas as atividades:
+- Histórico de alterações
+- Registro de status
+- Log de responsáveis
+- Rastreamento de datas
+
+### Timer Pomodoro
+Aumente sua produtividade:
+- ⏱️ Temporizador configurável
+- 🔄 Ciclos de trabalho e pausa
+- 📊 Histórico de sessões
+- ⚡ Modo tela cheia
+
+### Caderno de Anotações
+Mantenha suas anotações organizadas:
+- 📝 Editor de texto rico
+- 🎨 Formatação completa
+- 💾 Salvamento automático
 - 📱 Design responsivo
+
+### Interface
+- 🌓 Modo escuro/claro
+- 📱 Design responsivo
+- 💾 Armazenamento local
+- 🎯 Interface intuitiva
 
 ## 🚦 Começando
 
@@ -138,20 +180,24 @@ ToDoListApp/
 ## 💡 Como Usar
 
 1. **Tarefas**
-   - Adicione tarefas com nome, categoria, tipo e responsável
-   - Gerencie status e acompanhe o progresso
+   - Adicione tarefas com nome, categoria e responsável
+   - Edite tarefas existentes
+   - Atualize status com indicadores visuais
+   - Gerencie datas de entrega
 
 2. **Categorias**
-   - Organize suas tarefas em categorias personalizadas
-   - Gerencie e exclua categorias conforme necessário
+   - Organize suas tarefas em categorias
+   - Gerencie e exclua categorias
 
 3. **Responsáveis**
-   - Cadastre e gerencie responsáveis pelas tarefas
-   - Atribua tarefas a responsáveis específicos
+   - Cadastre responsáveis com informações completas
+   - Atribua responsáveis às tarefas
+   - Gerencie contatos de forma eficiente
 
 4. **Pomodoro**
-   - Use o timer para gerenciar seu tempo
-   - Personalize intervalos de trabalho e pausa
+   - Configure tempos de trabalho e pausa
+   - Use o modo tela cheia
+   - Acompanhe seu histórico
 
 ## 👥 Contribuição
 
@@ -164,13 +210,13 @@ ToDoListApp/
 
 ## 📄 Licença
 
-* Ainda não possui licença ativa.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ## 👤 Autor
 
 Igor da Silva
-- GitHub: [@seuusuario](https://github.com/igorrsilvaaf/)
-- LinkedIn: [Seu LinkedIn](https://www.linkedin.com/in/igor-da-silva-francisco-b248bb289/)
+- GitHub: [@igorrsilvaaf](https://github.com/igorrsilvaaf/)
+- LinkedIn: [Linkedin](https://www.linkedin.com/in/igor-da-silva-francisco-b248bb289/)
 
 ---
 
