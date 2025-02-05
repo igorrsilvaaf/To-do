@@ -222,7 +222,7 @@ export function addTask(event) {
             responsible: taskResponsible,
             project: taskProject,
             observation: taskObservation,
-            status: editingId ? document.querySelector(`tr[data-id="${editingId}"]`).children[1].textContent : 'Pendente'
+            status: editingId ? document.querySelector(`tr[data-id="${editingId}"] .status-select`).value : 'Pendente'
         };
 
         // Salvar no IndexedDB
@@ -232,30 +232,24 @@ export function addTask(event) {
         const request = store.put(task);
         
         request.onsuccess = function() {
-            // Remover linha antiga se estiver editando
             if (editingId) {
                 const oldRow = document.querySelector(`tr[data-id="${editingId}"]`);
                 if (oldRow) {
                     oldRow.remove();
                 }
+                saveReport('Tarefa Editada', task);
+            } else {
+                saveReport('Tarefa Adicionada', task);
             }
 
-            // Renderizar nova linha
             renderTask(task);
-            
-            // Salvar no relatório
-            saveReport(editingId ? 'Editada' : 'Adicionada', task);
-
-            // Resetar formulário
-            form.reset();
-            form.removeAttribute('data-editing');
-            const submitButton = form.querySelector('button[type="submit"]');
-            submitButton.textContent = 'Adicionar Tarefa';
         };
 
-        request.onerror = function() {
-            alert('Erro ao salvar a tarefa');
-        };
+        // Resetar formulário
+        form.reset();
+        form.removeAttribute('data-editing');
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.textContent = 'Adicionar Tarefa';
 
     } catch (error) {
         alert(error.message);
@@ -304,8 +298,14 @@ function saveReport(action, task) {
         date: new Date().toLocaleString('pt-BR'),
         status: task.status
     };
-    reports.push(report);
+    reports.unshift(report); // Adiciona no início do array para mostrar mais recentes primeiro
     localStorage.setItem('reports', JSON.stringify(reports));
+    
+    // Atualizar a interface se estiver na seção de relatórios
+    const reportsSection = document.getElementById('reports-section');
+    if (reportsSection.classList.contains('active')) {
+        loadReports();
+    }
 }
 
 // Função para carregar relatórios
@@ -348,6 +348,12 @@ export function initializeClearReportsButton() {
 function deleteTask(id, taskRow) {
     const confirmDelete = confirm("Tem certeza que deseja excluir esta tarefa?");
     if (confirmDelete) {
+        const task = {
+            text: taskRow.cells[0].textContent,
+            responsible: taskRow.cells[5].textContent,
+            status: taskRow.cells[1].textContent
+        };
+        
         // Remover do DOM
         taskRow.remove();
         
@@ -357,12 +363,7 @@ function deleteTask(id, taskRow) {
         store.delete(id);
 
         // Salvar no relatório
-        const task = {
-            text: taskRow.cells[0].textContent,
-            responsible: taskRow.cells[5].textContent,
-            status: taskRow.cells[1].textContent
-        };
-        saveReport('Excluída', task);
+        saveReport('Tarefa Excluída', task);
     }
 }
 
@@ -900,9 +901,19 @@ function renderTask(task) {
     const taskRow = document.createElement('tr');
     taskRow.setAttribute('data-id', task.id);
 
+    // Criar select para status
+    const statusSelect = `
+        <select class="status-select">
+            <option value="Pendente" ${task.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+            <option value="Em andamento" ${task.status === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
+            <option value="Concluída" ${task.status === 'Concluída' ? 'selected' : ''}>Concluída</option>
+            <option value="Bloqueada" ${task.status === 'Bloqueada' ? 'selected' : ''}>Bloqueada</option>
+        </select>
+    `;
+
     taskRow.innerHTML = `
         <td>${task.text}</td>
-        <td>${task.status}</td>
+        <td class="status-${task.status.toLowerCase().replace(' ', '-')}">${statusSelect}</td>
         <td>${task.type}</td>
         <td>${task.project}</td>
         <td>${task.dueDate}</td>
@@ -921,12 +932,17 @@ function renderTask(task) {
 
     taskList.appendChild(taskRow);
 
-    // Adicionar evento para edição
+    // Adicionar event listener para o select de status
+    const select = taskRow.querySelector('.status-select');
+    select.addEventListener('change', function() {
+        updateTaskStatus(task.id, this.value);
+    });
+
+    // Outros event listeners
     taskRow.querySelector('.btn-edit').addEventListener('click', function() {
         editTask(task);
     });
 
-    // Eventos existentes
     taskRow.querySelector('.btn-complete').addEventListener('click', function() {
         completeTask(task.id, taskRow);
     });
@@ -934,6 +950,28 @@ function renderTask(task) {
     taskRow.querySelector('.btn-delete').addEventListener('click', function() {
         deleteTask(task.id, taskRow);
     });
+}
+
+function updateTaskStatus(taskId, newStatus) {
+    const transaction = db.transaction(['tasks'], 'readwrite');
+    const store = transaction.objectStore('tasks');
+    const request = store.get(taskId);
+
+    request.onsuccess = function() {
+        const task = request.result;
+        if (task) {
+            const oldStatus = task.status;
+            task.status = newStatus;
+            store.put(task);
+
+            // Atualizar a célula de status
+            const statusCell = document.querySelector(`tr[data-id="${taskId}"] td:nth-child(2)`);
+            statusCell.className = `status-${newStatus.toLowerCase().replace(' ', '-')}`;
+            
+            // Salvar no relatório
+            saveReport(`Status alterado de ${oldStatus} para ${newStatus}`, task);
+        }
+    };
 }
 
 // Função para editar tarefa
@@ -979,4 +1017,26 @@ function editTask(task) {
 
     // Rolar até o formulário
     form.scrollIntoView({ behavior: 'smooth' });
+}
+
+function completeTask(taskId, taskRow) {
+    const transaction = db.transaction(['tasks'], 'readwrite');
+    const store = transaction.objectStore('tasks');
+    const request = store.get(taskId);
+
+    request.onsuccess = function() {
+        const task = request.result;
+        if (task) {
+            task.status = 'Concluída';
+            store.put(task);
+            
+            // Atualizar o select
+            const statusSelect = document.querySelector(`tr[data-id="${taskId}"] .status-select`);
+            statusSelect.value = 'Concluída';
+            statusSelect.className = `status-select status-concluida`;
+            
+            // Salvar no relatório
+            saveReport('Tarefa Concluída', task);
+        }
+    };
 }
