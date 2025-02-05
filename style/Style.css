@@ -272,35 +272,68 @@ p {
     background-color: #45a049;
 }
 
+/* Estilos para os status */
 .status-select {
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 0.8rem;
-    border: 1px solid #ccc;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 160px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 12px) center;
+    padding-right: 35px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    text-align: left;
+    color: #FFFFFF;
 }
 
-.status-pendente {
-    background-color: rgb(224, 224, 116);
-    color: white;
-    font-weight: bold;
+/* Status Pendente */
+.status-pendente .status-select {
+    background-color: #2196F3; /* Azul */
 }
 
-.status-em-andamento {
-    background-color: rgb(91, 91, 235);
-    color: white;
-    font-weight: bold;
+/* Status Em andamento */
+.status-em-andamento .status-select {
+    background-color: #9C27B0; /* Roxo */
 }
 
-.status-cancelada {
-    background-color: rgb(245, 105, 105);
-    color: white;
-    font-weight: bold;
+/* Status Concluída */
+.status-concluida .status-select,
+.status-concluída .status-select {
+    background-color: #4CAF50; /* Verde */
 }
 
-.status-concluida {
-    background-color: rgb(10, 133, 10);
-    color: white;
-    font-weight: bold;
+/* Status Bloqueada */
+.status-bloqueada .status-select {
+    background-color: #F44336; /* Vermelho */
+}
+
+/* Hover estados */
+.status-select:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus estados */
+.status-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Tema escuro - mantém as mesmas cores para melhor consistência */
+body.dark-mode .status-select {
+    color: #FFFFFF;
+}
+
+body.dark-mode .status-select option {
+    background-color: #282a36;
+    color: #f8f8f2;
 }
 
 /* Botão de Menu (hambúrguer) */
@@ -1304,4 +1337,69 @@ body.dark-mode .btn-edit:hover {
 
 body.dark-mode .btn-delete:hover {
     background-color: rgba(255, 85, 85, 0.1);
+}
+
+/* Estilos para a tabela de responsáveis */
+.responsaveis-table {
+    width: 100%;
+    min-width: 300px; /* Reduzido o min-width para melhor visualização em mobile */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.responsaveis-table th,
+.responsaveis-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+    .responsaveis-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .responsaveis-table th,
+    .responsaveis-table td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsividade para smartphones */
+@media (max-width: 480px) {
+    .responsaveis-table th,
+    .responsaveis-table td {
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+
+    /* Ajusta o tamanho das colunas em telas pequenas */
+    .responsaveis-table th:nth-child(1),
+    .responsaveis-table td:nth-child(1) {
+        width: 40%; /* Nome */
+    }
+    
+    .responsaveis-table th:nth-child(2),
+    .responsaveis-table td:nth-child(2) {
+        width: 30%; /* Email */
+    }
+    
+    .responsaveis-table th:nth-child(3),
+    .responsaveis-table td:nth-child(3) {
+        width: 20%; /* Telefone */
+    }
+    
+    .responsaveis-table th:nth-child(4),
+    .responsaveis-table td:nth-child(4) {
+        width: 10%; /* Excluir */
+    }
+
+    /* Garante que o botão de excluir fique visível */
+    .responsaveis-table .btn-delete {
+        padding: 4px;
+        font-size: 1rem;
+    }
 }
