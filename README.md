@@ -223,3 +223,5 @@ Igor da Silva
 <p align="center">
   Desenvolvido com ❤️ por Igor Silva
 </p>
+
+![CI/CD Pipeline](https://github.com/igorrsilvaaf/todo-list/actions/workflows/ci.yml/badge.svg)
