@@ -5,6 +5,21 @@ on:
     branches: [develop]
   pull_request:
     branches: [develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Ambiente para deploy"
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - development
+          - production
+      debug_enabled:
+        description: "Habilitar debug"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   test:
@@ -47,7 +62,7 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
 
     steps:
       - uses: actions/checkout@v4
@@ -63,6 +78,13 @@ jobs:
           rm -rf node_modules
           rm -f package-lock.json
           npm install
+
+      - name: Debug Info
+        if: ${{ inputs.debug_enabled }}
+        run: |
+          echo "Running in ${{ inputs.environment }} environment"
+          echo "Debug mode enabled"
+          npm list
 
       - name: Build
         run: npm run dist
