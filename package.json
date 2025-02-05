@@ -1,9 +1,15 @@
 {
     "devDependencies": {
+        "@babel/core": "^7.24.0",
+        "@babel/preset-env": "^7.24.0",
+        "babel-jest": "^29.7.0",
         "electron": "^33.0.1",
         "electron-builder": "^25.1.8",
         "electron-packager": "^17.1.2",
-        "fake-indexeddb": "^6.0.0"
+        "eslint": "^8.57.0",
+        "fake-indexeddb": "^6.0.0",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0"
     },
     "name": "to-do-list",
     "version": "1.0.1",
@@ -11,7 +17,8 @@
     "main": "js/exe.js",
     "scripts": {
         "start": "electron .",
-        "dist": "electron-builder"
+        "dist": "electron-builder",
+        "test": "jest"
     },
     "build": {
         "appId": "com.todo.list",
@@ -256,5 +263,14 @@
     },
     "keywords": [],
     "author": "Igor Da Silva Francisco",
-    "license": "ISC"
+    "license": "ISC",
+    "jest": {
+        "testEnvironment": "jsdom",
+        "setupFiles": [
+            "fake-indexeddb/auto"
+        ],
+        "transform": {
+            "^.+\\.js$": "babel-jest"
+        }
+    }
 }
