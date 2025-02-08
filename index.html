@@ -20,8 +20,10 @@
 
     <!-- Painel Lateral -->
     <div class="sidebar">
+        <button class="close-menu">
+            <i class="fa-solid fa-times"></i>
+        </button>
         <div class="sidebar__header">
-            <img src="Imagens/logo_nova.png" alt="Logo" class="sidebar-logo" />
             <h2>To-Do list</h2>
         </div>
         <nav>
@@ -45,7 +47,8 @@
                 </li>
                 <li class="theme-toggle-container">
                      <button id="theme-toggle" class="theme-toggle">
-                        <i id="theme-icon" class="fas fa-sun fa-lg"></i> <span id="theme-text">Dark Mode</span>
+                        <span id="theme-icon"></span> 
+                        <span id="theme-text">Dark Mode</span>
                     </button>
                 </li>
             </ul>
@@ -63,7 +66,7 @@
         <!-- Seção Home -->
         <section id="home-section" class="section active">
             <header>
-                <h1 id="page-title">Lista de Tarefas ✏️</h1>
+                <h1 id="page-title">Lista de Tarefas</h1>
             </header>
 
             <form id="taskForm" class="task-form">
@@ -109,10 +112,10 @@
             </div>
         </section>
 
-        <!-- Seção Categorias que antes era projetos -->
+        <!-- Seção Categorias -->
         <section id="projects-section" class="section hidden">
             <header>
-                <h1>Categorias 🗄️</h1>
+                <h1>Categorias</h1>
             </header>
 
             <form id="projectForm" class="project-form">
@@ -121,27 +124,29 @@
                 <button type="submit">Adicionar categoria</button>
             </form>
 
-            <table class="project-table">
-                <thead>
-                    <tr>
-                        <th>Categoria</th>
-                        <th>Data de Criação</th>
-                        <th>Excluir</th>
-                    </tr>
-                </thead>
-                <tbody id="projectsTable">
-                    <!-- As categorias serão exibidas aqui -->
-                </tbody>
-            </table>
+            <div class="project-table-container">
+                <table class="project-table">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Data de Criação</th>
+                            <th>Excluir</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projectsTable">
+                        <!-- As categorias serão exibidas aqui -->
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Seção Caderno -->
         <section id="notebook-section" class="section hidden">
             <header>
-                <h1> Caderno 📓</h1>
+                <h1>Caderno</h1>
             </header>
             <div class="editor-container">
-                <div id="editor-toolbar">
+                <div id="editor-toolbar" class="notebook-form">
                     <button onclick="document.execCommand('bold')">Negrito</button>
                     <button onclick="document.execCommand('italic')">Itálico</button>
                     <button onclick="document.execCommand('underline')">Sublinhado</button>
@@ -168,7 +173,7 @@
         <!-- Seção Relatórios -->
         <section id="reports-section" class="section hidden">
             <header>
-                <h1>Relatórios 📊</h1>
+                <h1>Relatórios</h1>
             </header>
             <button id="clearReportsButton" class="clear-reports-button">Limpar Relatório</button> <!-- Novo botão -->
             <div class="table-container">
@@ -193,7 +198,7 @@
         <div id="notification" class="notification"></div>
         <section id="pomodoro-section" class="section hidden">
             <header>
-                <h1>Pomodoro ⏲️</h1>
+                <h1>Pomodoro</h1>
             </header>
             <div class="pomodoro-container">
                 <div class="timer">
@@ -232,17 +237,17 @@
         <!-- Seção Responsáveis -->
         <section id="responsaveis-section" class="section hidden">
             <header>
-                <h1>Responsáveis 👥</h1>
+                <h1>Responsáveis</h1>
             </header>
 
-            <form id="responsavelForm" class="project-form">
+            <form id="responsavelForm" class="responsavel-form">
                 <input type="text" id="responsavelName" placeholder="Nome do responsável" required>
                 <input type="email" id="responsavelEmail" placeholder="E-mail do responsável">
                 <input type="tel" id="responsavelTelefone" placeholder="Telefone do responsável">
                 <button type="submit">Adicionar responsável</button>
             </form>
 
-            <div class="table-container">
+            <div class="responsaveis-table-container">
                 <table class="responsaveis-table">
                     <thead>
                         <tr>

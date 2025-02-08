@@ -15,7 +15,7 @@ body {
 
 .sidebar {
     background-color: #2d3a47;
-    color: white;
+    color: var(--accent);
     width: 300px;
     height: 100vh;
     padding: 20px;
@@ -30,19 +30,40 @@ body {
     left: 0;
 }
 
+/* Cabeçalho da sidebar */
 .sidebar__header {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 5px;
-    font-size: 1.5rem;
-    margin-left: 30px;
+    justify-content: center;
+    padding: 20px 15px;
+    margin: -20px -20px 20px -20px;
+    background: #2d3a47;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Título da sidebar */
+.sidebar__header h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+
+/* Logo da sidebar */
 .sidebar-logo {
-    width: 48px;
-    height: auto;
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+/* Efeito hover no logo */
+.sidebar__header:hover .sidebar-logo {
+    transform: scale(1.05);
 }
 
 .sidebar ul {
@@ -60,7 +81,7 @@ body {
     margin-left: 2px;
     position: relative;
     color: white;
-    font-size: 24px;
+    font-size: 18px;
 }
 
 /* Conteúdo principal */
@@ -106,9 +127,95 @@ p {
     color: #555;
 }
 
+/* Container da tabela */
 .task-table-container {
+    max-width: 1200px; 
+    margin: 20px auto; 
+    padding: 20px;
     overflow-x: auto;
-    /* Permitir rolagem horizontal */
+    background: var(--bg-darker);
+    border-radius: 8px;
+}
+
+/* Tabela de tarefas */
+.task-table {
+    width: 100%;
+    min-width: 1400px; 
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+/* Cabeçalho */
+.task-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Células */
+.task-table td {
+    padding: 12px 16px;
+    white-space: nowrap;
+}
+
+/* Larguras das colunas */
+.task-table th:nth-child(1),
+.task-table td:nth-child(1) { width: 20%; } /* Tarefa */
+
+.task-table th:nth-child(2),
+.task-table td:nth-child(2) { width: 10%; } /* Status */
+
+.task-table th:nth-child(3),
+.task-table td:nth-child(3) { width: 10%; } /* Tipo */
+
+.task-table th:nth-child(4),
+.task-table td:nth-child(4) { width: 10%; } /* Categoria */
+
+.task-table th:nth-child(5),
+.task-table td:nth-child(5) { width: 15%; } /* Data */
+
+.task-table th:nth-child(6),
+.task-table td:nth-child(6) { width: 10%; } /* Responsável */
+
+.task-table th:nth-child(7),
+.task-table td:nth-child(7) { width: 15%; } /* Observação */
+
+.task-table th:nth-child(8),
+.task-table td:nth-child(8),
+.task-table th:nth-child(9),
+.task-table td:nth-child(9),
+.task-table th:nth-child(10),
+.task-table td:nth-child(10) { 
+    width: 5%; /* Botões de ação */
+    text-align: center;
+}
+
+/* Estilo da barra de rolagem */
+.task-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.task-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.task-table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.task-table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .task-table-container {
+        margin: 20px 10px;
+        max-width: none;
+    }
 }
 
 .task-table,
@@ -138,7 +245,7 @@ p {
     display: flex;
     gap: 15px;
     width: 100%;
-    max-width: 1000px; /* Aumentado para manter consistência */
+    max-width: 1000px;  
 }
 
 .date-category-group input {
@@ -173,7 +280,7 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 1200px; /* Aumentado de 1000px para 1200px */
+    max-width: 1200px; 
     margin: 0 auto;
     padding: 20px;
     gap: 15px;
@@ -184,7 +291,7 @@ p {
 .task-form select,
 .task-form textarea {
     width: 100%;
-    max-width: 1000px; /* Aumentado de 800px para 1000px */
+    max-width: 1000px; 
     padding: 12px;
     font-size: 1rem;
     border-radius: 8px;
@@ -208,20 +315,20 @@ p {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
-    align-self: flex-start; /* Alinha o botão à esquerda */
-    margin-left: calc((100% - 1000px) / 2); /* Alinha com os inputs */
+    align-self: flex-start; 
+    margin-left: calc((100% - 1000px) / 2); 
 }
 
 /* Responsividade para o botão */
 @media (max-width: 1200px) {
     .task-form button {
-        margin-left: 0; /* Remove margem em telas menores */
+        margin-left: 0; 
     }
 }
 
 @media (max-width: 768px) {
     .task-form button {
-        width: 100%; /* Botão ocupa largura total em telas pequenas */
+        width: 100%; 
         max-width: none;
     }
 }
@@ -294,20 +401,17 @@ p {
 }
 
 .project-form button {
-    width: 160px;
-    /* Tamanho fixo para o botão */
-    padding: 10px;
+    width: 200px;
+    padding: 12px;
     font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 8px;
     border: none;
     background-color: #4CAF50;
     color: white;
     cursor: pointer;
-    text-align: left;
-    /* Alinhar o texto à esquerda */
-    margin-top: 10px;
-    /* Espaçamento superior para separar do campo anterior */
     transition: background-color 0.3s;
+    align-self: flex-start;
+    margin-left: calc((100% - 1000px) / 2);
 }
 
 .project-form button:hover {
@@ -341,7 +445,7 @@ p {
 
 /* Status Em andamento */
 .status-em-andamento .status-select {
-    background-color: #9C27B0; /* Roxo */
+    background-color: #571c61; /* Roxo */
 }
 
 /* Status Concluída */
@@ -378,17 +482,60 @@ body.dark-mode .status-select option {
     color: #f8f8f2;
 }
 
-/* Botão de Menu (hambúrguer) */
+/* Botão do menu */
 .menu-toggle {
-    background-color: transparent;
-    border: none;
-    padding: 2px;
-    font-size: 1.8rem;
-    cursor: pointer;
     position: fixed;
-    top: 22px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
     z-index: 104;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+/* Esconde completamente o botão quando o menu está aberto */
+.sidebar.active .menu-toggle {
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+/* Botão de fechar */
+.close-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+/* Mostra o botão de fechar quando o menu está aberto */
+.sidebar.active .close-menu {
+    display: block;
+}
+
+/* Hover nos botões */
+.menu-toggle:hover,
+.close-menu:hover {
+    color: var(--accent-hover);
+    transform: scale(1.1);
 }
 
 /* Estilo para o Caderno */
@@ -488,9 +635,17 @@ body.dark-mode .status-select option {
         width: 100%;
     }
 
-    .sidebar__header,
-    .sidebar li {
-        font-size: 1rem;
+    .sidebar__header {
+        padding: 15px;
+    }
+    
+    .sidebar-logo {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .sidebar__header h2 {
+        font-size: 1.4rem;
     }
 
     .task-table th,
@@ -589,7 +744,6 @@ body.dark-mode .status-select option {
 .reports-table {
     width: 100%;
     min-width: 600px;
-    /* Define um valor mínimo para garantir que não seja comprimida demais */
     border-collapse: collapse;
 }
 
@@ -626,7 +780,6 @@ body.dark-mode .status-select option {
 
 .clear-reports-button:hover {
     background-color: #d32f2f;
-    /* Cor de fundo ao passar o mouse */
 }
 
 /* Ajustes para dispositivos móveis pequenos */
@@ -923,16 +1076,25 @@ body.dark-mode .status-select option {
 }
 
 #theme-icon {
-    margin-left: 2px;
+    font-family: "Font Awesome 6 Free";
+    margin-left: 10px;
     position: relative;
-    color: white;
-    font-size: 18px;
+    color: var(--accent);
+    font-weight: 400;
 }
 
-#theme-text {
-    font-size: 16px;
-    margin-left: -1px;
-    color: white;
+/* Quando estiver em modo claro */
+body.light-mode #theme-icon::before {
+    content: "\f186"; 
+    color: #282a36;
+    font-size: 28px;
+}
+
+/* Quando estiver em modo escuro */
+body.dark-mode #theme-icon::before {
+    content: "\f185";
+    color: var(--accent);
+    font-size: 28px;
 }
 
 .theme-toggle-container {
@@ -946,18 +1108,18 @@ body.dark-mode .status-select option {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
+    color: var(--accent);
 }
 
 /* Dark mode */
 body.dark-mode {
     background-color: #282a36;
     color: #f8f8f2;
-    /* Texto padrão */
 }
 
 body.dark-mode #page-title {
-    color: #40d479;
+    color: var(--accent);
 }
 
 body.dark-mode h1 {
@@ -1001,30 +1163,31 @@ body.dark-mode .task-form select,
 body.dark-mode .task-form textarea {
     background-color: #44475a;
     color: #f8f8f2;
-    border-color: #6272a4;
+    border-color: #696b7c
 }
 
 body.dark-mode .task-form button {
-    background-color: #50fa7b;
-    color: #282a36;
+    background-color: #44475A;
+    color: #8BE9FD;
+    border-color: #696b7c;
 }
 
 body.dark-mode .task-form button:hover {
-    background-color: #40d479;
+    background-color: #282A36;
 }
 
 body.dark-mode a,
 body.dark-mode .task-form label {
-    color: #8be9fd;
+    color: #696b7c;
 }
 
 body.dark-mode .task-form input::placeholder,
 body.dark-mode .task-form textarea::placeholder {
-    color: rgba(139, 233, 253, 0.2);
+    color: rgba(139, 233, 253, 0.3);
 }
 
 body.dark-mode .date-category-group select option:disabled {
-    color: rgba(139, 233, 253, 0.2);
+    color: rgba(139, 233, 253, 0.3);
 }
 
 
@@ -1112,8 +1275,8 @@ body.light-mode .task-form label {
     padding: 10px 12px;
     font-size: 0.9rem;
     font-weight: bold;
-    color: white;
-    background-color: #4CAF50;
+    color: var(--accent);
+    background-color: #696b7c;
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -1132,12 +1295,12 @@ body.light-mode .task-form label {
 
 /* Modo escuro */
 body.dark-mode .download-btn {
-    background-color: #50fa7b;
-    color: #282a36;
+    color: var(--accent);
+    background-color: #696b7c;
 }
 
 body.dark-mode .download-btn:hover {
-    background-color: #40d479;
+    background-color: #2d3a47;
     transform: translateY(-2px);
 }
 
@@ -1384,7 +1547,7 @@ body.dark-mode .btn-delete:hover {
 /* Estilos para a tabela de responsáveis */
 .responsaveis-table {
     width: 100%;
-    min-width: 300px; /* Reduzido o min-width para melhor visualização em mobile */
+    min-width: 300px; 
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -1443,5 +1606,383 @@ body.dark-mode .btn-delete:hover {
     .responsaveis-table .btn-delete {
         padding: 4px;
         font-size: 1rem;
+    }
+}
+
+/* Título da página */
+#page-title {
+    text-align: center;
+    margin: 30px auto;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--accent); 
+    padding: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Efeito hover suave */
+#page-title:hover {
+    color: var(--accent-hover);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Responsividade do título */
+@media (max-width: 768px) {
+    #page-title {
+        font-size: 2rem;
+        margin: 20px auto;
+    }
+}
+
+/* Formulário de categorias */
+.project-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 15px;
+}
+
+/* Inputs do formulário */
+.project-form input {
+    width: 100%;
+    max-width: 1000px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Botão de submit */
+.project-form button {
+    width: 200px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-self: flex-start;
+    margin-left: calc((100% - 1000px) / 2);
+}
+
+/* Container da tabela de projetos/categorias */
+.project-table-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    overflow-x: auto;
+    background: var(--bg-darker);
+    border-radius: 8px;
+}
+
+/* Tabela de projetos/categorias */
+.project-table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+/* Cabeçalho */
+.project-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Células */
+.project-table td {
+    padding: 12px 16px;
+    white-space: nowrap;
+}
+
+/* Larguras das colunas */
+.project-table th:nth-child(1),
+.project-table td:nth-child(1) { width: 80%; } /* Categoria */
+
+.project-table th:nth-child(2),
+.project-table td:nth-child(2) { width: 10%; } /* Data de Criação */
+
+.project-table th:nth-child(3),
+.project-table td:nth-child(3) { width: 10%; } /* Excluir */
+
+/* Estilo da barra de rolagem */
+.project-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.project-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.project-table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.project-table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .project-table-container {
+        margin: 20px 10px;
+        max-width: none;
+    }
+}
+
+/* Título das seções */
+.section header h1 {
+    text-align: center;
+    margin: 30px auto;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--accent);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Ícone específico para Categorias */
+#projects-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f07b"; /* Ícone de pasta do Font Awesome */
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900; /* Necessário para ícones sólidos do Font Awesome */
+}
+
+/* Efeito hover no ícone */
+#projects-section header h1:hover::after {
+    content: "\f07c"; /* Ícone de pasta aberta no hover */
+    transition: all 0.3s ease;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .section header h1 {
+        font-size: 2rem;
+        margin: 20px auto;
+    }
+    
+    #projects-section header h1::after {
+        font-size: 2rem;
+    }
+}
+
+/* Variáveis de cores */
+:root {
+    --bg-dark: #10403B;
+    --bg-darker: #12736900;
+    --accent: #8BE9FD;      
+    --accent-hover: #9bb5b2; 
+    --text-primary: #FFFFFF;
+    --text-secondary: #BFBFBF;
+}
+
+/* Ícones para todas as seções */
+/* Tarefas */
+#home-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f0ae"; /* Ícone de lista de tarefas */
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Categorias */
+#projects-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f07b";
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Responsáveis */
+#responsaveis-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f0c0"; /* Ícone de usuários */
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Caderno */
+#notebook-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f02d"; /* Ícone de livro */
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Relatórios */
+#reports-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f080"; /* Ícone de gráfico */
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Pomodoro */
+#pomodoro-section header h1::after {
+    font-family: "Font Awesome 6 Free";
+    content: "\f2f2"; /* Ícone de relógio */
+    font-size: 2.2rem;
+    margin-left: 10px;
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Efeito hover para todos os ícones */
+.section header h1:hover::after {
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+/* Responsividade para todos os ícones */
+@media (max-width: 768px) {
+    .section header h1::after {
+        font-size: 2rem;
+    }
+}
+
+/* Botões de ação na tabela de tarefas */
+.btn-complete::before {
+    font-family: "Font Awesome 6 Free";
+    content: "\f00c"; /* Ícone de check */
+    font-weight: 900;
+}
+
+.btn-edit::before {
+    font-family: "Font Awesome 6 Free";
+    content: "\f304"; /* Ícone de edição com lápis */
+    font-weight: 900;
+}
+
+.btn-delete::before {
+    font-family: "Font Awesome 6 Free";
+    content: "\f2ed"; /* Ícone de lixeira moderno */
+    font-weight: 900;
+}
+
+/* Cores e hover para os botões */
+.btn-complete::before {
+    color: #4CAF50; /* Verde */
+}
+
+.btn-edit::before {
+    color: #2196F3; /* Azul */
+}
+
+.btn-delete::before {
+    color: #F44336; /* Vermelho */
+}
+
+/* Hover states */
+.btn-complete:hover::before {
+    color: #45a049;
+}
+
+.btn-edit:hover::before {
+    color: #1976D2;
+}
+
+.btn-delete:hover::before {
+    color: #D32F2F;
+}
+
+/* Container da tabela de responsáveis */
+.responsaveis-table-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    overflow-x: auto;
+    background: var(--bg-darker);
+    border-radius: 8px;
+}
+
+/* Tabela de responsáveis */
+.responsaveis-table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+/* Cabeçalho */
+.responsaveis-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Células */
+.responsaveis-table td {
+    padding: 12px 16px;
+    white-space: nowrap;
+}
+
+/* Larguras das colunas */
+.responsaveis-table th:nth-child(1),
+.responsaveis-table td:nth-child(1) { width: 30%; } /* Nome */
+
+.responsaveis-table th:nth-child(2),
+.responsaveis-table td:nth-child(2) { width: 30%; } /* Email */
+
+.responsaveis-table th:nth-child(3),
+.responsaveis-table td:nth-child(3) { width: 30%; } /* Telefone */
+
+.responsaveis-table th:nth-child(4),
+.responsaveis-table td:nth-child(4) { width: 10%; } /* Excluir */
+
+/* Estilo da barra de rolagem */
+.responsaveis-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.responsaveis-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.responsaveis-table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.responsaveis-table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .responsaveis-table-container {
+        margin: 20px 10px;
+        max-width: none;
     }
 }

@@ -1,15 +1,19 @@
 // Botão da sidebar responsivo
 const menuToggle = document.getElementById('menu-toggle');
+const closeMenu = document.querySelector('.close-menu');
 const sidebar = document.querySelector('.sidebar');
 
-if (menuToggle && sidebar) {
+if (menuToggle && sidebar && closeMenu) {
+    // Abrir menu
     menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-        if (sidebar.classList.contains('active')) {
-            sidebar.style.display = 'block';
-        } else {
-            sidebar.style.display = 'none';
-        }
+        sidebar.classList.add('active');
+        sidebar.style.display = 'block';
+    });
+
+    // Fechar menu
+    closeMenu.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        sidebar.style.display = 'none';
     });
 }
 
@@ -54,7 +58,7 @@ function setPageTitle(title) {
 
 export function initializeMenuItems() {
     const menuItems = [
-        { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas ✏️' },
+        { id: 'menu-home', section: 'home-section', title: 'Lista de Tarefas' },
         { id: 'menu-projects', section: 'projects-section', title: 'Categorias 🗄️' },
         { id: 'menu-responsaveis', section: 'responsaveis-section', title: 'Responsáveis 👥' },
         { id: 'menu-notebook', section: 'notebook-section', title: 'Caderno 📓' },
@@ -425,21 +429,21 @@ function addProject(event) {
 
 // Função para renderizar um projeto na tabela
 function renderProject(project) {
-    const projectList = document.getElementById('projectsTable');
-
+    const projectsTable = document.getElementById('projectsTable');
+    
     const projectRow = document.createElement('tr');
     projectRow.setAttribute('data-id', project.id);
 
     projectRow.innerHTML = `
         <td>${project.name}</td>
-        <td>${project.dueDate}</td>
-        <td><button class="btn-delete-project">🗑️</button></td>
+        <td>${project.creationDate}</td>
+        <td><button class="btn-delete"></button></td>
     `;
 
-    projectList.appendChild(projectRow);
+    projectsTable.appendChild(projectRow);
 
-    projectRow.querySelector('.btn-delete-project').addEventListener('click', function () {
-        projectList.removeChild(projectRow);
+    projectRow.querySelector('.btn-delete').addEventListener('click', function() {
+        projectsTable.removeChild(projectRow);
         deleteProject(project.id);
         loadProjectsInSelect();
     });
@@ -831,7 +835,7 @@ function renderResponsavel(responsavel) {
         <td>${responsavel.name}</td>
         <td>${responsavel.email}</td>
         <td>${responsavel.telefone}</td>
-        <td><button class="btn-delete">🗑️</button></td>
+        <td><button class="btn-delete"></button></td>
     `;
 
     responsaveisTable.appendChild(responsavelRow);
@@ -920,13 +924,13 @@ function renderTask(task) {
         <td>${task.responsible}</td>
         <td>${task.observation}</td>
         <td class="action-column">
-            <button class="btn-complete" title="Marcar como concluída">✅</button>
+            <button class="btn-complete" title="Marcar como concluída"></button>
         </td>
         <td class="action-column">
-            <button class="btn-edit" title="Editar tarefa">✏️</button>
+            <button class="btn-edit" title="Editar tarefa"></button>
         </td>
         <td class="action-column">
-            <button class="btn-delete" title="Excluir tarefa">🗑️</button>
+            <button class="btn-delete" title="Excluir tarefa"></button>
         </td>
     `;
 
