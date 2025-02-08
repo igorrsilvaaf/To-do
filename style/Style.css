@@ -136,18 +136,17 @@ p {
 /* Estilização para o contêiner que agrupa Data e Categoria */
 .date-category-group {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    width: 100%;
+    max-width: 1000px; /* Aumentado para manter consistência */
 }
 
 .date-category-group input {
-    flex: 0.2;
-    padding: 10px;
-    font-size: 1rem;
+    flex: 1;
 }
+
 .date-category-group select {
     flex: 1;
-    padding: 10px;
-    font-size: 1rem;
 }
 
 .task-table td {
@@ -173,17 +172,77 @@ p {
 .project-form {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
-    gap: 10px;
+    align-items: center;
+    max-width: 1200px; /* Aumentado de 1000px para 1200px */
+    margin: 0 auto;
+    padding: 20px;
+    gap: 15px;
 }
 
-/* Estilo para o campo de observação */
+/* Inputs do formulário */
+.task-form input,
+.task-form select,
 .task-form textarea {
-    padding: 10px;
+    width: 100%;
+    max-width: 1000px; /* Aumentado de 800px para 1000px */
+    padding: 12px;
     font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 8px;
     border: 1px solid #ccc;
+}
+
+/* Textarea de observação */
+.task-form textarea {
+    min-height: 120px;
     resize: vertical;
+}
+
+/* Botão de submit */
+.task-form button {
+    width: 200px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-self: flex-start; /* Alinha o botão à esquerda */
+    margin-left: calc((100% - 1000px) / 2); /* Alinha com os inputs */
+}
+
+/* Responsividade para o botão */
+@media (max-width: 1200px) {
+    .task-form button {
+        margin-left: 0; /* Remove margem em telas menores */
+    }
+}
+
+@media (max-width: 768px) {
+    .task-form button {
+        width: 100%; /* Botão ocupa largura total em telas pequenas */
+        max-width: none;
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .task-form {
+        padding: 15px;
+    }
+
+    .task-form input,
+    .task-form select,
+    .task-form textarea {
+        width: 100%;
+        max-width: none;
+    }
+
+    .date-category-group {
+        flex-direction: column;
+        max-width: none;
+    }
 }
 
 .task-table td.observation-cell {
@@ -228,23 +287,6 @@ p {
     background-color: #45a049;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
-}
-
-.task-form button {
-    width: 150px;
-    /* Tamanho fixo para o botão */
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    text-align: left;
-    /* Alinhar o texto à esquerda */
-    margin-top: 10px;
-    /* Espaçamento superior para separar do campo anterior */
-    transition: background-color 0.3s;
 }
 
 .task-form button:hover {
