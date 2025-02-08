@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1729203686583" clover="3.2.0">
-  <project timestamp="1729203686583" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1738973318842" clover="3.2.0">
+  <project timestamp="1738973318842" name="All files">
+    <metrics statements="20" coveredstatements="19" conditionals="22" coveredconditionals="21" methods="4" coveredmethods="4" elements="46" coveredelements="44" complexity="0" loc="20" ncloc="20" packages="1" files="1" classes="1"/>
+    <file name="validators.js" path="/media/igorqa/SSD128/Repositorios/To-do/js/validators.js">
+      <metrics statements="20" coveredstatements="19" conditionals="22" coveredconditionals="21" methods="4" coveredmethods="4"/>
+      <line num="2" count="9" type="cond" truecount="4" falsecount="0"/>
+      <line num="3" count="4" type="stmt"/>
+      <line num="6" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="10" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="14" count="3" type="cond" truecount="1" falsecount="1"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="18" count="3" type="stmt"/>
+      <line num="22" count="13" type="cond" truecount="4" falsecount="0"/>
+      <line num="23" count="2" type="stmt"/>
+      <line num="26" count="11" type="cond" truecount="4" falsecount="0"/>
+      <line num="27" count="3" type="stmt"/>
+      <line num="30" count="8" type="cond" truecount="4" falsecount="0"/>
+      <line num="31" count="1" type="stmt"/>
+      <line num="34" count="7" type="stmt"/>
+      <line num="38" count="7" type="stmt"/>
+      <line num="39" count="7" type="stmt"/>
+      <line num="43" count="5" type="stmt"/>
+      <line num="44" count="5" type="stmt"/>
+    </file>
   </project>
 </coverage>
